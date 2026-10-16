@@ -28,7 +28,7 @@ Click **Projects**, click the project, change what you want, then **Publish → 
 ## Editing the About page and your name
 
 - **Pages → About page**: your story and the "Fun stuff" list.
-- **Site Settings**: your name, tagline, email, links and the look of the site (Default theme).
+- **Site Settings**: your name, tagline, email, links.
 
 ## When does it go live?
 

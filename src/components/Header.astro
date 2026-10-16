@@ -1,5 +1,5 @@
 ---
-import { site, url, lockTheme, THEMES } from '../lib';
+import { site, url } from '../lib';
 const path = Astro.url.pathname;
 const links = [['Projects', '/projects/'], ['About', '/about/'], ['Contact', '/contact/']];
 const isActive = (h: string) => path.startsWith(url(h));
@@ -11,11 +11,6 @@ const isActive = (h: string) => path.startsWith(url(h));
       {links.map(([l, h]) => <a href={url(h)} aria-current={isActive(h) ? 'page' : undefined}>{l}</a>)}
     </nav>
     <div class="controls">
-      {!lockTheme && (
-        <div class="theme-switch" role="group" aria-label="Theme">
-          {THEMES.map((t) => <button type="button" data-set-theme={t} aria-pressed="false" title={`${t} theme`}>{t}</button>)}
-        </div>
-      )}
       <button type="button" id="mode-toggle" class="icon-btn" aria-label="Toggle light/dark mode" title="Light / dark / auto">
         <span aria-hidden="true" id="mode-icon">◐</span>
       </button>

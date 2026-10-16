@@ -31,11 +31,10 @@ then open http://localhost:4321/portfolio/admin/ (`local_backend: true` is set i
 |---|---|
 | `site` | Origin of the deployed site (`https://corrigk.github.io`; later your custom domain). Env: `SITE_URL`. |
 | `base` | Sub-path. `/portfolio` for a project page, `''` for a user page (`corrigk.github.io` repo) or custom domain. Env: `SITE_BASE`. |
-| `lockTheme` | `null` shows the theme switcher; `'blueprint' | 'editorial' | 'playful' | 'purdue'\| 'editorial' \| 'playful'` hides it and locks that theme. Env: `LOCK_THEME`. |
 
 When you change `site`/`base`, also update `site_url`/`display_url`/`repo` in `public/admin/config.yml`.
 
-Name, tagline, links and **default theme** live in `src/data/site.json` (editable in the CMS under Site Settings).
+Name, tagline and links live in `src/data/site.json` (editable in the CMS under Site Settings).
 
 ## Add or edit a project
 
@@ -82,11 +81,9 @@ demo:
 ```
 Put the app's built static files in `public/demos/my-demo/` (build it with a relative base, e.g. Vite `base: './'`). A working example is `public/demos/sample-counter/`. The sandbox allows scripts, forms, popups and pointer lock, but not same-origin access, so demos can't touch the rest of the site (and `localStorage` inside the demo won't work).
 
-## Themes
+## Look and feel
 
-Four themes (Blueprint, Editorial, Playful, Purdue: black and old gold) are defined as CSS variables at the top of `src/styles/global.css`, each with light and dark variants following the visitor's system setting (a ◐ button cycles auto/light/dark). The visitor's choice is remembered in `localStorage`.
-
-To pick one and hide the switcher: set `lockTheme` in `site.config.mjs` (or build with `LOCK_THEME=editorial`), and set `defaultTheme` in `site.json` to match.
+One theme: black and old gold (Purdue-inspired, not an official Purdue site) with Barlow Condensed headings and Inter body text. All colors, fonts and radii are CSS variables at the top of `src/styles/global.css`. Light and dark follow the visitor's system setting, and the ◐ button in the header cycles auto / light / dark (remembered in `localStorage`).
 
 ## Deploy
 

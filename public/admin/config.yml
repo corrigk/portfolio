@@ -76,7 +76,6 @@ collections:
           - { label: Your name, name: name, widget: string }
           - { label: Tagline, name: tagline, widget: string }
           - { label: Home page intro, name: intro, widget: text }
-          - { label: Default theme, name: defaultTheme, widget: select, options: [blueprint, editorial, playful, purdue] }
           - { label: Email, name: email, widget: string }
           - { label: GitHub URL, name: github, widget: string }
           - { label: LinkedIn URL, name: linkedin, widget: string }

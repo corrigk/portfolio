@@ -27,7 +27,7 @@ const tags = [...new Set(all.flatMap((p) => p.data.tags.map((t) => t.toLowerCase
           {categories.map((c) => <button type="button" class="chip" data-cat={c} aria-pressed="false">{c}</button>)}
         </div>
         <div class="filter-row" role="group" aria-label="Tags">
-          {tags.map((t) => <button type="button" class="chip" data-tag={t} aria-pressed="false">#{t}</button>)}
+          {tags.map((t) => <button type="button" class="chip" data-tag={t} aria-pressed="false">{t}</button>)}
         </div>
         <p class="muted" id="count" aria-live="polite" style="margin:0"></p>
       </form>

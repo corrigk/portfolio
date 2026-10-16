@@ -3,9 +3,6 @@ import site from './data/site.json';
 
 export { site };
 export const base = (cfg.base || '').replace(/\/$/, '');
-export const lockTheme = cfg.lockTheme as string | null;
-export const THEMES = ['blueprint', 'editorial', 'playful', 'purdue'] as const;
-export const defaultTheme = (lockTheme || site.defaultTheme || 'blueprint') as string;
 
 /** Prefix internal paths (e.g. "/uploads/a.jpg" or "/projects/") with the site base. External URLs pass through. */
 export function url(p: string): string {

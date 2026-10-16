@@ -1,16 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../lib';
+import { site, url } from '../lib';
 ---
 <Base title="Contact" description={`Get in touch with ${site.name}.`}>
   <section>
     <div class="wrap">
+      <p class="eyebrow">Open channel</p>
       <h1>Contact</h1>
       <p class="muted">The best way to reach me is email.</p>
       <ul class="contact-list">
-        <li><a href={`mailto:${site.email}`}>Email<span>{site.email}</span></a></li>
+        <li class="contact-row">
+          <a href={`mailto:${site.email}`}>Email<span>{site.email}</span></a>
+          <button type="button" class="copy-btn" data-copy={site.email} aria-label="Copy email address">Copy</button>
+        </li>
         <li><a href={site.github} rel="me noopener">GitHub<span>{site.github.replace('https://', '')}</span></a></li>
         <li><a href={site.linkedin} rel="me noopener">LinkedIn<span>{site.linkedin.replace('https://', '')}</span></a></li>
+        {site.resume && <li><a href={url(site.resume)} download>Résumé<span>Download PDF</span></a></li>}
       </ul>
     </div>
   </section>

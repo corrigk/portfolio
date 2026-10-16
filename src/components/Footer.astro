@@ -1,9 +1,12 @@
 ---
-import { site } from '../lib';
+import { site, url } from '../lib';
 ---
 <footer class="site-footer">
   <div class="wrap">
-    <p>© {new Date().getFullYear()} {site.name}</p>
-    <p><a href={site.github} rel="me">GitHub</a> · <a href={`mailto:${site.email}`}>Email</a></p>
+    <p>© {new Date().getFullYear()} {site.name} · <a href={site.github} rel="me">GitHub</a> · <a href={`mailto:${site.email}`}>Email</a> · <a href={url('/rss.xml')}>RSS</a></p>
+    <button type="button" class="to-top" data-to-top>
+      <svg viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1c3 2.5 4 6 3.5 10h-7C3 7 4 3.5 7 1z" fill="var(--gold)"/><path d="M3.5 9 1 13h2.6M10.5 9 13 13h-2.6" fill="none" stroke="var(--gold)" stroke-width="1.2"/><path d="M5.5 12.5 7 17l1.5-4.5" fill="#daaa00"/></svg>
+      Back to top
+    </button>
   </div>
 </footer>

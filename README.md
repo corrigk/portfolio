@@ -57,11 +57,13 @@ gallery:
   - { image: /uploads/a.jpg, alt: "What it shows", caption: "Optional" }
 links: { demo: https://..., repo: https://github.com/..., video: https://youtu.be/..., other: https://... }
 specs: [PLA, ESP32]       # tools / materials / tech
+specSheet:                # optional datasheet table on the project page
+  - { label: Apogee, value: "4,200 ft" }
 ---
 Markdown description here.
 ```
 
-Images go in `public/uploads/` and are referenced as `/uploads/name.jpg` (the site adds the base path automatically). Resize photos to ~1600px wide before uploading; Pages serves them as-is.
+Images go in `public/uploads/` and are referenced as `/uploads/name.jpg` (the site adds the base path automatically). On every deploy, `scripts/optimize-images.mjs` shrinks photos wider than 1920px and recompresses them (originals in the repo are untouched).
 
 Placeholder projects have `placeholder: true`. Delete those files when you have real ones (and the matching `public/uploads/<slug>*.svg`).
 
@@ -85,6 +87,18 @@ Put the app's built static files in `public/demos/my-demo/` (build it with a rel
 
 One theme: black and old gold (Purdue-inspired, not an official Purdue site) with Barlow Condensed headings and Inter body text. All colors, fonts and radii are CSS variables at the top of `src/styles/global.css`. Light and dark follow the visitor's system setting, and the ◐ button in the header cycles auto / light / dark (remembered in `localStorage`).
 
+## Effects and extras
+
+All optional polish lives in `src/scripts/fx.ts` and `src/styles/fx.css`; every animation is disabled for visitors with *reduce motion* turned on.
+
+- **Rocket transition:** clicking an internal link sends a tiny rocket along the header's gold rule, then the page cross-fades (View Transitions).
+- **Hero:** twinkling starfield plus the Cygnus constellation (it looks like an aircraft) drawing itself in and slowly rotating, with a satellite on an orbit (`src/components/HeroArt.astro`).
+- **Telemetry strip** on the home page with live counts per category (`categoryOrder` in `site.config.mjs` sets the order).
+- **Fuel gauge:** a gold reading-progress bar with a rocket tip on project pages.
+- **HUD corner brackets** on card hover, scroll-reveal for cards, and a back-to-top rocket in the footer.
+- **Spec sheet** table on project pages (`specSheet` field).
+- **Résumé button** (upload a PDF in Site Settings), a copy-email button on Contact, an RSS feed at `/rss.xml`, an auto-generated share image at `/og.png`, and a "Lost in space" 404 page.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml` and publishes to GitHub Pages. One-time: repo *Settings → Pages → Source: GitHub Actions*. CMS login needs a one-time extra setup: [SETUP-CMS.md](SETUP-CMS.md).
@@ -98,6 +112,5 @@ Every push to `main` runs `.github/workflows/deploy.yml` and publishes to GitHub
 
 ## Known limitations
 
-- Uploaded images are served as-is (not auto-resized); keep them modest in size.
-- Social-share image: the placeholder is an SVG, which many platforms ignore. Upload a 1200×630 JPG/PNG in Site Settings.
+- The generated share image uses plain system fonts (Arial-style), not the site fonts.
 - Fonts load from Google Fonts.

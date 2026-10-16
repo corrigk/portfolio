@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import Starfield from '../components/Starfield.astro';
+import { url } from '../lib';
+---
+<Base title="Signal lost" description="This page drifted out of orbit.">
+  <section class="hero lost">
+    <Starfield />
+    <div class="wrap">
+      <p class="eyebrow">Error 404 · Signal lost</p>
+      <h1>Lost in space</h1>
+      <p class="lead">This page drifted out of orbit. It may have moved, or it never launched.</p>
+      <div class="actions">
+        <a class="btn" href={url('/')}>Return to base</a>
+        <a class="btn ghost" href={url('/projects/')}>View projects</a>
+      </div>
+      <svg class="drifter" viewBox="0 0 120 120" aria-hidden="true">
+        <g fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round">
+          <path d="M60 14c14 12 20 30 18 52H42c-2-22 4-40 18-52z" fill="var(--surface)" />
+          <circle cx="60" cy="42" r="7" />
+          <path d="M42 56l-12 16 12 0M78 56l12 16-12 0" fill="var(--surface)" />
+          <path d="M50 66l4 14h12l4-14" />
+        </g>
+        <path d="M54 82q6 18 12 0" fill="#daaa00" opacity=".8" />
+      </svg>
+    </div>
+  </section>
+</Base>

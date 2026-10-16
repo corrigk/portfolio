@@ -2,6 +2,7 @@ import cfg from '../site.config.mjs';
 import site from './data/site.json';
 
 export { site };
+export const categoryOrder: string[] = cfg.categoryOrder || ['hardware', 'software', 'fun'];
 export const base = (cfg.base || '').replace(/\/$/, '');
 
 /** Prefix internal paths (e.g. "/uploads/a.jpg" or "/projects/") with the site base. External URLs pass through. */

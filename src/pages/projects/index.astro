@@ -2,14 +2,16 @@
 import Base from '../../layouts/Base.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
+import { categoryOrder } from '../../lib';
 
 const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const categories = ['hardware', 'software', 'fun'].filter((c) => all.some((p) => p.data.category === c));
+const categories = categoryOrder.filter((c) => all.some((p) => p.data.category === c));
 const tags = [...new Set(all.flatMap((p) => p.data.tags.map((t) => t.toLowerCase())))].sort();
 ---
 <Base title="Projects" description="All projects: software, hardware and fun builds.">
   <section>
     <div class="wrap">
+      <p class="eyebrow">Mission log</p>
       <h1>Projects</h1>
       <form class="filters" id="filters" role="search" aria-label="Filter projects" onsubmit="return false">
         <div class="filter-row">

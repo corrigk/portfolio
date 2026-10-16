@@ -1,8 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Starfield from '../components/Starfield.astro';
+import Telemetry from '../components/Telemetry.astro';
 import { getCollection } from 'astro:content';
-import { site, url } from '../lib';
+import { site, url, categoryOrder } from '../lib';
 
 const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const featured = all.filter((p) => p.data.featured).slice(0, 3);
@@ -11,16 +14,23 @@ const hasPlaceholders = all.some((p) => p.data.placeholder);
 <Base>
   {hasPlaceholders && <div class="placeholder-note">Demo content: projects below are placeholders.</div>}
   <section class="hero">
-    <div class="wrap">
-      <p class="eyebrow reveal">Portfolio</p>
-      <h1 class="reveal">{site.name}</h1>
-      <p class="lead reveal">{site.tagline}</p>
-      <div class="actions reveal">
-        <a class="btn" href={url('/projects/')}>See all projects</a>
-        <a class="btn ghost" href={url('/about/')}>About me</a>
+    <Starfield />
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Portfolio</p>
+        <h1 class="reveal">{site.name}</h1>
+        <p class="lead reveal">{site.tagline}</p>
+        <div class="actions reveal">
+          <a class="btn" href={url('/projects/')}>See all projects</a>
+          <a class="btn ghost" href={url('/about/')}>About me</a>
+          {site.resume && <a class="btn ghost" href={url(site.resume)} download>Résumé ↓</a>}
+        </div>
       </div>
+      <HeroArt />
     </div>
   </section>
+
+  <div class="wrap"><Telemetry projects={all} order={categoryOrder} /></div>
 
   <section>
     <div class="wrap">
@@ -31,10 +41,13 @@ const hasPlaceholders = all.some((p) => p.data.placeholder);
     </div>
   </section>
 
-  <section>
+  <section class="intro-band">
     <div class="wrap">
-      <p class="prose">{site.intro}</p>
-      <p><a href={url('/projects/')}>Browse everything</a> · <a href={url('/contact/')}>Get in touch</a></p>
+      <p class="intro-text">{site.intro}</p>
+      <div class="actions">
+        <a class="btn" href={url('/projects/')}>Browse everything</a>
+        <a class="btn ghost" href={url('/contact/')}>Get in touch</a>
+      </div>
     </div>
   </section>
 </Base>

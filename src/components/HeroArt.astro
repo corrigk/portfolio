@@ -1,0 +1,42 @@
+---
+// Decorative hero art: orbit rings with a satellite, and the Cygnus constellation
+// (the "Northern Cross", which looks like an aircraft) drawing itself in, then slowly drifting.
+const stars = [
+  { x: 220, y: 70, r: 3.6 },  // Deneb
+  { x: 220, y: 190, r: 3.2 }, // Sadr
+  { x: 218, y: 285, r: 2.4 }, // Eta Cygni
+  { x: 215, y: 370, r: 3 },   // Albireo
+  { x: 125, y: 165, r: 2.6 }, // Delta Cygni
+  { x: 70, y: 130, r: 2 },    // Iota Cygni
+  { x: 320, y: 215, r: 2.8 }, // Gienah
+  { x: 385, y: 250, r: 2 },   // Zeta Cygni
+];
+const lines = [[0, 1], [1, 2], [2, 3], [5, 4], [4, 1], [1, 6], [6, 7]];
+const orbit = 'M10,220 a210,58 0 1,0 420,0 a210,58 0 1,0 -420,0';
+---
+<svg class="hero-art" viewBox="0 0 440 440" aria-hidden="true" focusable="false">
+  <g class="rings" fill="none" stroke="var(--gold)">
+    <circle cx="220" cy="220" r="214" stroke-opacity=".18" />
+    <circle cx="220" cy="220" r="150" stroke-opacity=".22" stroke-dasharray="2 6" />
+    <path d="M6 220h428M220 6v428" stroke-opacity=".08" />
+    <g transform="rotate(-24 220 220)">
+      <path d={orbit} stroke-opacity=".45" />
+      <circle r="5" fill="#daaa00" stroke="none" class="sat">
+        <animateMotion dur="16s" repeatCount="indefinite" path={orbit} />
+      </circle>
+    </g>
+  </g>
+  <g class="constellation-drift">
+    <g class="constellation">
+      {lines.map(([a, b], i) => (
+        <line x1={stars[a].x} y1={stars[a].y} x2={stars[b].x} y2={stars[b].y} pathLength="1" style={`--d:${0.5 + i * 0.12}s`} />
+      ))}
+      {stars.map((s, i) => (
+        <g transform={`translate(${s.x} ${s.y})`}>
+          <circle class="star" r={s.r} style={`--d:${0.3 + i * 0.09}s;--t:${2.4 + (i % 4) * 0.7}s`} />
+        </g>
+      ))}
+      <text x="236" y="64" class="label">CYGNUS</text>
+    </g>
+  </g>
+</svg>

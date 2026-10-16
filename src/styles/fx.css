@@ -1,0 +1,113 @@
+/* ---------- Space / flight effects ---------- */
+
+/* Cross-document fade between pages (supported browsers; others just navigate) */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+/* Hero layout + art */
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: 2rem; }
+.hero-copy { position: relative; z-index: 1; }
+.hero-art { width: 100%; max-width: 440px; justify-self: end; overflow: visible; }
+@media (max-width: 760px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-art { position: absolute; right: -110px; top: -20px; width: 300px; opacity: .45; z-index: 0; }
+}
+.hero-art line { stroke: var(--gold); stroke-width: 1.3; stroke-opacity: .75; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.hero-art .star { fill: light-dark(#7d5f30, #fff8e6); filter: drop-shadow(0 0 4px rgb(218 170 0 / .7)); }
+.hero-art .label { font: 600 10px var(--font-body); letter-spacing: .3em; fill: var(--accent); opacity: .8; }
+.constellation, .constellation-drift { transform-box: view-box; transform-origin: 220px 220px; }
+.constellation { transform: rotate(-32deg); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .constellation { animation: spin-in 1.6s cubic-bezier(.16, 1, .3, 1) both; }
+  .constellation-drift { animation: drift 240s linear 1.6s infinite; }
+  .hero-art line { stroke-dashoffset: 1; animation: draw .9s ease-out var(--d) forwards; }
+  .hero-art .star { transform-box: fill-box; transform-origin: center; animation: pop .5s cubic-bezier(.3, 1.6, .5, 1) var(--d) both, twinkle var(--t) ease-in-out calc(var(--d) + .6s) infinite; }
+  .hero-art .label { animation: fade-in .8s ease 1.6s both; }
+  @keyframes spin-in { from { transform: rotate(-120deg) scale(.55); opacity: 0; } }
+  @keyframes drift { to { transform: rotate(360deg); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes pop { from { transform: scale(0); } }
+  @keyframes twinkle { 50% { opacity: .45; } }
+  @keyframes fade-in { from { opacity: 0; } }
+}
+
+/* Starfield (dark mode shows white stars; light mode shows faint gold dust) */
+.hero { isolation: isolate; }
+.starfield { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; color: light-dark(rgb(125 95 48 / .35), rgb(255 255 255 / .8)); }
+.starfield span { position: absolute; top: 0; left: 0; width: 1.5px; height: 1.5px; border-radius: 50%; }
+.starfield span:nth-child(2) { width: 2px; height: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .starfield span:nth-child(1) { animation: twinkle 5s ease-in-out infinite; }
+  .starfield span:nth-child(2) { animation: twinkle 7s ease-in-out 2s infinite, star-drift 120s linear infinite; }
+  @keyframes star-drift { to { transform: translateX(-60px); } }
+}
+
+/* Telemetry strip */
+.telemetry { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1px; margin: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--line); overflow: hidden; box-shadow: var(--shadow); }
+.t-cell { padding: 1rem 1.2rem; background: var(--surface); }
+.t-cell dt { font-size: .66rem; font-weight: 600; text-transform: uppercase; letter-spacing: .2em; color: var(--muted); }
+.t-cell dd { margin: .2rem 0 0; font: 700 2rem/1 var(--font-display); color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.status-cell dd { font-size: 1.25rem; padding-top: .45rem; display: flex; align-items: center; gap: .5rem; color: var(--text); text-transform: uppercase; }
+.blink { width: 8px; height: 8px; border-radius: 50%; background: #34c77b; box-shadow: 0 0 0 0 rgb(52 199 123 / .6); }
+@media (prefers-reduced-motion: no-preference) { .blink { animation: ping 2s ease-out infinite; } @keyframes ping { 70% { box-shadow: 0 0 0 8px rgb(52 199 123 / 0); } } }
+@media (max-width: 560px) { .telemetry { grid-template-columns: repeat(3, 1fr); } .t-cell { padding: .7rem .8rem; } .t-cell dt { font-size: .58rem; letter-spacing: .14em; } .t-cell dd { font-size: 1.5rem; } .status-cell dd { font-size: 1rem; } }
+
+/* Intro band */
+.intro-band { border-top: 1px solid var(--line); }
+.intro-text { font: 500 clamp(1.3rem, 3vw, 1.9rem)/1.35 var(--font-body); max-width: 40ch; letter-spacing: -.01em; margin: 0 0 1.5rem; }
+.intro-band .actions { display: flex; gap: .85rem; flex-wrap: wrap; }
+
+/* HUD corner brackets on cards */
+.card { position: relative; }
+.card::before, .card::after { content: ''; position: absolute; width: 16px; height: 16px; border: 2px solid var(--gold); opacity: 0; transition: opacity .2s, transform .25s; z-index: 2; pointer-events: none; }
+.card::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; transform: translate(6px, 6px); }
+.card::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; transform: translate(-6px, -6px); }
+.card:hover::before, .card:hover::after, .card:focus-within::before, .card:focus-within::after { opacity: 1; transform: none; }
+
+/* Scroll reveal (only when JS added .will-reveal) */
+.will-reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s cubic-bezier(.2, .7, .2, 1), transform .6s cubic-bezier(.2, .7, .2, 1), border-color .2s; transition-delay: calc(var(--i, 0) * 70ms); }
+.will-reveal.in { opacity: 1; transform: none; }
+.card.will-reveal.in:hover { transform: translateY(-3px); transition-delay: 0s; }
+
+/* Rocket that flies along the header rule */
+.rocket-fly { position: fixed; left: 0; z-index: 60; pointer-events: none; filter: drop-shadow(0 0 6px rgb(218 170 0 / .6)); }
+
+/* Fuel gauge: reading progress with a rocket at the tip */
+.fuel-gauge { position: fixed; left: 0; right: 0; height: 3px; z-index: 19; pointer-events: none; top: var(--header-h, 58px); }
+.fuel-gauge::before { content: ''; position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, #8e6f3e, #daaa00); }
+.fuel-gauge::after { content: '▶'; position: absolute; top: -7px; left: calc(var(--p, 0) * 100%); transform: translateX(-50%); font-size: 11px; color: #daaa00; text-shadow: 0 0 6px rgb(218 170 0 / .8); }
+
+/* Spec sheet (datasheet table) */
+.spec-sheet { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.spec-sheet th, .spec-sheet td { padding: .45rem 0; border-bottom: 1px dashed var(--line-strong); vertical-align: top; }
+.spec-sheet tr:last-child th, .spec-sheet tr:last-child td { border-bottom: 0; }
+.spec-sheet th { text-align: left; font-weight: 500; color: var(--muted); padding-right: 1rem; }
+.spec-sheet td { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Back-to-top rocket */
+.to-top { font: inherit; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; display: inline-flex; align-items: center; gap: .5rem; background: none; border: 1px solid var(--line-strong); color: var(--text); border-radius: 999px; padding: .45rem .9rem; cursor: pointer; }
+.to-top:hover { border-color: var(--gold); }
+.to-top svg { width: 14px; height: 18px; transition: transform .2s; }
+.to-top:hover svg { transform: translateY(-2px); }
+@media (prefers-reduced-motion: no-preference) {
+  .to-top.liftoff svg { animation: liftoff .9s cubic-bezier(.5, 0, .75, 0); }
+  @keyframes liftoff { 30% { transform: translateY(2px); } 100% { transform: translateY(-60px); opacity: 0; } }
+}
+
+/* Contact copy button */
+.contact-row { display: flex; gap: .5rem; align-items: stretch; }
+.contact-row a { flex: 1; }
+.copy-btn { font: inherit; font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 1rem; cursor: pointer; min-width: 7.5rem; }
+.copy-btn:hover { border-color: var(--gold); }
+
+/* 404 */
+.lost { min-height: 70vh; display: grid; align-items: center; }
+.lost .wrap { position: relative; }
+.drifter { position: absolute; right: 4%; top: 0; width: 140px; }
+@media (prefers-reduced-motion: no-preference) {
+  .drifter { animation: float 9s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translate(0, 0) rotate(18deg); } 50% { transform: translate(-16px, 22px) rotate(38deg); } }
+}
+@media (max-width: 760px) { .drifter { position: static; margin-top: 2rem; width: 100px; } }

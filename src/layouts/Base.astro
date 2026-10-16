@@ -1,10 +1,11 @@
 ---
 import '../styles/global.css';
+import '../styles/fx.css';
 import { site, url } from '../lib';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 interface Props { title?: string; description?: string; image?: string; }
-const { title, description = site.tagline, image = site.ogImage } = Astro.props;
+const { title, description = site.tagline, image = site.ogImage || '/og.png' } = Astro.props;
 const full = title ? `${title} · ${site.name}` : `${site.name} · Portfolio`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(url(image), Astro.site).href;
@@ -24,6 +25,8 @@ const ogImage = new URL(url(image), Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} · Projects`} href={url('/rss.xml')} />
+    <meta name="theme-color" content="#000000" />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,6 +43,7 @@ const ogImage = new URL(url(image), Astro.site).href;
     <Footer />
     <script>
       import '../scripts/theme';
+      import '../scripts/fx';
     </script>
   </body>
 </html>

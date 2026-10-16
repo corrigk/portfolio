@@ -1,0 +1,14 @@
+---
+// Deterministic starfield made of box-shadows (no images, no canvas). Two layers twinkle out of phase.
+function layer(seed: number, count: number) {
+  let s = seed;
+  const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  return Array.from({ length: count }, () => `${Math.round(rnd() * 1600)}px ${Math.round(rnd() * 700)}px`).join(',');
+}
+const a = layer(7, 70);
+const b = layer(42, 45);
+---
+<div class="starfield" aria-hidden="true">
+  <span style={`box-shadow:${a}`}></span>
+  <span style={`box-shadow:${b}`}></span>
+</div>

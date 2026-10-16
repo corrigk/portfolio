@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { projects: CollectionEntry<'projects'>[]; order?: string[] }
+const { projects, order = ['hardware', 'software', 'fun'] } = Astro.props;
+const count = (c: string) => projects.filter((p) => p.data.category === c).length;
+const latest = projects.reduce((m, p) => (p.data.date > m ? p.data.date : m), new Date(0));
+const cells = [
+  { k: 'Projects', v: projects.length },
+  ...order.map((c) => ({ k: c, v: count(c) })).filter((c) => c.v > 0),
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<dl class="telemetry">
+  {cells.map((c) => (
+    <div class="t-cell">
+      <dt>{c.k}</dt>
+      <dd data-count={c.v}>{pad(c.v)}</dd>
+    </div>
+  ))}
+  <div class="t-cell">
+    <dt>Last update</dt>
+    <dd>{latest.getUTCFullYear()}.{pad(latest.getUTCMonth() + 1)}</dd>
+  </div>
+  <div class="t-cell status-cell">
+    <dt>Status</dt>
+    <dd><span class="blink" aria-hidden="true"></span>Building</dd>
+  </div>
+</dl>

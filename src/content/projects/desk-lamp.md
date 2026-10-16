@@ -16,6 +16,11 @@ gallery:
   - image: /uploads/desk-lamp-2.svg
     alt: "Placeholder gallery image 2 for Adjustable Desk Lamp"
     caption: "Placeholder caption 2"
+specSheet:
+  - { label: Reach, value: "420 mm" }
+  - { label: Brightness, value: "900 lm" }
+  - { label: Input, value: "12 V DC" }
+  - { label: Print time, value: "14 h" }
 specs:
   - PLA filament
   - ESP32

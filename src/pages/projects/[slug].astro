@@ -20,6 +20,7 @@ const linkItems = [
 ].filter(([, h]) => h) as [string, string][];
 ---
 <Base title={d.title} description={d.summary} image={d.cover}>
+  <div class="fuel-gauge" aria-hidden="true"></div>
   {d.placeholder && <div class="placeholder-note">Placeholder project: replace via the CMS.</div>}
   <article class="wrap" style="padding-block:3rem">
     <p><a href={url('/projects/')}>← All projects</a></p>
@@ -70,6 +71,11 @@ const linkItems = [
       </div>
 
       <aside>
+        {d.specSheet.length > 0 && (
+          <div class="side-box"><h2>Spec sheet</h2>
+            <table class="spec-sheet"><tbody>{d.specSheet.map((r) => <tr><th scope="row">{r.label}</th><td>{r.value}</td></tr>)}</tbody></table>
+          </div>
+        )}
         {d.specs.length > 0 && (
           <div class="side-box"><h2>Tools / materials / tech</h2><ul>{d.specs.map((s) => <li>{s}</li>)}</ul></div>
         )}

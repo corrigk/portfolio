@@ -31,7 +31,7 @@ then open http://localhost:4321/portfolio/admin/ (`local_backend: true` is set i
 |---|---|
 | `site` | Origin of the deployed site (`https://corrigk.github.io`; later your custom domain). Env: `SITE_URL`. |
 | `base` | Sub-path. `/portfolio` for a project page, `''` for a user page (`corrigk.github.io` repo) or custom domain. Env: `SITE_BASE`. |
-| `lockTheme` | `null` shows the theme switcher; `'blueprint' \| 'editorial' \| 'playful'` hides it and locks that theme. Env: `LOCK_THEME`. |
+| `lockTheme` | `null` shows the theme switcher; `'blueprint' | 'editorial' | 'playful' | 'purdue'\| 'editorial' \| 'playful'` hides it and locks that theme. Env: `LOCK_THEME`. |
 
 When you change `site`/`base`, also update `site_url`/`display_url`/`repo` in `public/admin/config.yml`.
 
@@ -84,7 +84,7 @@ Put the app's built static files in `public/demos/my-demo/` (build it with a rel
 
 ## Themes
 
-Three themes (Blueprint, Editorial, Playful) are defined as CSS variables at the top of `src/styles/global.css`, each with light and dark variants following the visitor's system setting (a ◐ button cycles auto/light/dark). The visitor's choice is remembered in `localStorage`.
+Four themes (Blueprint, Editorial, Playful, Purdue: black and old gold) are defined as CSS variables at the top of `src/styles/global.css`, each with light and dark variants following the visitor's system setting (a ◐ button cycles auto/light/dark). The visitor's choice is remembered in `localStorage`.
 
 To pick one and hide the switcher: set `lockTheme` in `site.config.mjs` (or build with `LOCK_THEME=editorial`), and set `defaultTheme` in `site.json` to match.
 

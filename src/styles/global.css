@@ -47,6 +47,31 @@
   --grid-bg: radial-gradient(var(--accent) 2px, transparent 2.5px); --grid-size: 26px 26px; --grid-opacity: .18; --transform: none;
 }
 
+/* Purdue: black and old-gold (same look as the PACTM Wing Explorer / Congo basin dashboards;
+   Purdue-inspired palette, not an official Purdue site) */
+:root[data-theme='purdue'] {
+  --bg: light-dark(#f3f1ec, #09090a);
+  --surface: light-dark(#ffffff, #121214);
+  --text: light-dark(#0b0b0b, #f5f3ee);
+  --muted: light-dark(#625d54, #a19c91);
+  --accent: light-dark(#7d5f30, #cfb991);
+  --accent-text: light-dark(#ffffff, #0b0b0b);
+  --line: light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .14));
+  --font-display: 'Barlow Condensed', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --radius: 14px; --border-w: 1px; --tracking: .02em; --display-weight: 700;
+  --shadow: 0 8px 24px light-dark(rgb(0 0 0 / .06), rgb(0 0 0 / .35));
+  --grid-bg: none; --grid-size: auto; --grid-opacity: 0; --transform: uppercase;
+  --header-bg: #000; --header-text: #f5f3ee; --header-line: #cfb991;
+}
+:root[data-theme='purdue'] h1, :root[data-theme='purdue'] h2, :root[data-theme='purdue'] h3 { text-transform: uppercase; }
+:root[data-theme='purdue'] .site-header { border-bottom-width: 3px; }
+:root[data-theme='purdue'] section h2::before { content: ''; display: inline-block; width: 4px; height: .8em; background: #cfb991; margin-right: .5rem; border-radius: 2px; vertical-align: -.05em; }
+:root[data-theme='purdue'] .site-header .theme-switch button[aria-pressed='true'],
+:root[data-theme='purdue'] .site-header .icon-btn:hover { background: #cfb991; color: #0b0b0b; }
+:root[data-theme='purdue'] .btn { border-color: transparent; }
+:root[data-theme='purdue'] .btn.ghost { border-color: var(--line); }
+
 /* ---------- BASE ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -73,15 +98,15 @@ h3 { font-size: 1.25rem; }
 section { padding-block: clamp(2.5rem, 7vw, 5rem); }
 
 /* ---------- HEADER ---------- */
-.site-header { border-bottom: var(--border-w) solid var(--line); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; }
+.site-header { border-bottom: var(--border-w) solid var(--header-line, var(--line)); background: var(--header-bg, color-mix(in srgb, var(--bg) 88%, transparent)); color: var(--header-text, var(--text)); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; }
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; padding-block: .75rem; }
-.brand { font-family: var(--font-display); font-weight: var(--display-weight); color: var(--text); text-decoration: none; font-size: 1.1rem; letter-spacing: var(--tracking); }
+.brand { font-family: var(--font-display); font-weight: var(--display-weight); color: var(--header-text, var(--text)); text-decoration: none; font-size: 1.1rem; letter-spacing: var(--tracking); }
 nav { display: flex; gap: 1.1rem; flex: 1; }
-nav a { color: var(--text); text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
+nav a { color: var(--header-text, var(--text)); text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
 nav a:hover, nav a[aria-current] { border-bottom-color: var(--accent); }
 .controls { display: flex; gap: .5rem; align-items: center; }
 .theme-switch { display: inline-flex; border: var(--border-w) solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.theme-switch button, .icon-btn { font: inherit; font-size: .8rem; background: transparent; color: var(--text); border: 0; padding: .4rem .7rem; cursor: pointer; text-transform: capitalize; }
+.theme-switch button, .icon-btn { font: inherit; font-size: .8rem; background: transparent; color: var(--header-text, var(--text)); border: 0; padding: .4rem .7rem; cursor: pointer; text-transform: capitalize; }
 .theme-switch button + button { border-left: var(--border-w) solid var(--line); }
 .theme-switch button[aria-pressed='true'] { background: var(--accent); color: var(--accent-text); }
 .icon-btn { border: var(--border-w) solid var(--line); border-radius: var(--radius); font-size: 1rem; }

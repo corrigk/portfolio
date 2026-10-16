@@ -1,0 +1,9 @@
+---
+import { site } from '../lib';
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© {new Date().getFullYear()} {site.name}</p>
+    <p><a href={site.github} rel="me">GitHub</a> · <a href={`mailto:${site.email}`}>Email</a></p>
+  </div>
+</footer>

@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { url, fmtDate, videoEmbed, base } from '../../lib';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return all.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, newer: all[i - 1], older: all[i + 1] },
+  }));
+}
+const { project, newer, older } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const embed = videoEmbed(d.links.video);
+const demoSrc = d.demo?.folder ? `${base}/demos/${d.demo.folder}/index.html` : d.demo?.url;
+const linkItems = [
+  ['Live demo', d.links.demo], ['Source on GitHub', d.links.repo], ['Video', d.links.video], ['More', d.links.other],
+].filter(([, h]) => h) as [string, string][];
+---
+<Base title={d.title} description={d.summary} image={d.cover}>
+  {d.placeholder && <div class="placeholder-note">Placeholder project: replace via the CMS.</div>}
+  <article class="wrap" style="padding-block:3rem">
+    <p><a href={url('/projects/')}>← All projects</a></p>
+    <p class="meta"><span class="pill">{d.category}</span><span>{fmtDate(d.date)}</span><span class="pill alt">{d.status}</span></p>
+    <h1>{d.title}</h1>
+    <p class="muted" style="font-size:1.2rem;max-width:60ch">{d.summary}</p>
+    <img class="detail-cover" src={url(d.cover)} alt={d.coverAlt} width="1280" height="720" decoding="async" />
+
+    <div class="detail-grid">
+      <div>
+        <div class="prose"><Content /></div>
+
+        {demoSrc && (
+          <section style="padding-block:2rem 0" aria-labelledby="demo-h">
+            <h2 id="demo-h">Live demo</h2>
+            <div class="demo-frame">
+              <div class="demo-loading" id="demo-loading">Loading demo…</div>
+              <iframe id="demo-frame" src={demoSrc} title={`${d.title} live demo`} height={d.demo?.height ?? 520}
+                sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            </div>
+            <p class="demo-actions">
+              <span>Not loading? Some sites block embedding.</span>
+              <a href={demoSrc.startsWith('http') ? demoSrc : demoSrc} target="_blank" rel="noopener">Open demo in a new tab ↗</a>
+            </p>
+          </section>
+        )}
+
+        {embed && (
+          <section style="padding-block:2rem 0" aria-labelledby="vid-h">
+            <h2 id="vid-h">Video</h2>
+            <div class="video"><iframe src={embed} title={`${d.title} video`} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+          </section>
+        )}
+
+        {d.gallery.length > 0 && (
+          <section style="padding-block:2rem 0" aria-labelledby="gal-h">
+            <h2 id="gal-h">Gallery</h2>
+            <div class="gallery">
+              {d.gallery.map((g, i) => (
+                <button type="button" data-lb={i} data-src={url(g.image)} data-alt={g.alt} data-cap={g.caption ?? ''} aria-label={`Open image: ${g.alt}`}>
+                  <img src={url(g.image)} alt={g.alt} width="400" height="300" loading="lazy" decoding="async" />
+                  {g.caption && <span class="cap">{g.caption}</span>}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside>
+        {d.specs.length > 0 && (
+          <div class="side-box"><h2>Tools / materials / tech</h2><ul>{d.specs.map((s) => <li>{s}</li>)}</ul></div>
+        )}
+        {d.tags.length > 0 && (
+          <div class="side-box"><h2>Tags</h2><p style="margin:0">{d.tags.map((t) => <span class="pill" style="margin:0 .3rem .3rem 0">{t}</span>)}</p></div>
+        )}
+        {linkItems.length > 0 && (
+          <div class="side-box"><h2>Links</h2><ul class="link-list">{linkItems.map(([l, h]) => <li><a href={h} target="_blank" rel="noopener">{l} ↗</a></li>)}</ul></div>
+        )}
+      </aside>
+    </div>
+
+    <nav class="prevnext" style="margin-top:4rem" aria-label="More projects">
+      {newer ? <a href={url(`/projects/${newer.id}/`)}><small>← Newer</small>{newer.data.title}</a> : <span></span>}
+      {older && <a class="next" href={url(`/projects/${older.id}/`)}><small>Older →</small>{older.data.title}</a>}
+    </nav>
+  </article>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Image viewer">
+    <div class="lb-inner">
+      <img id="lb-img" src="" alt="" />
+      <p class="lb-cap" id="lb-cap"></p>
+    </div>
+    <button type="button" class="lb-btn lb-close" id="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous image">‹</button>
+    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next image">›</button>
+  </dialog>
+  <script>
+    import '../../scripts/lightbox';
+    import '../../scripts/demo';
+  </script>
+</Base>

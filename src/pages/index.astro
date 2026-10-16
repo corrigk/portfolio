@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { site, url } from '../lib';
+
+const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const featured = all.filter((p) => p.data.featured).slice(0, 3);
+const hasPlaceholders = all.some((p) => p.data.placeholder);
+---
+<Base>
+  {hasPlaceholders && <div class="placeholder-note">Demo content: projects below are placeholders.</div>}
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow reveal">Portfolio</p>
+      <h1 class="reveal">{site.name}</h1>
+      <p class="lead reveal">{site.tagline}</p>
+      <div class="actions reveal">
+        <a class="btn" href={url('/projects/')}>See all projects</a>
+        <a class="btn ghost" href={url('/about/')}>About me</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><h2>Highlights</h2><a href={url('/projects/')}>All projects →</a></div>
+      <div class="grid">
+        {featured.map((p) => <ProjectCard project={p} eager />)}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="prose">{site.intro}</p>
+      <p><a href={url('/projects/')}>Browse everything</a> · <a href={url('/contact/')}>Get in touch</a></p>
+    </div>
+  </section>
+</Base>

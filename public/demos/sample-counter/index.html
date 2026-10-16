@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sample demo</title>
+<style>body{font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#f4f6fb;color:#111}
+button{font:inherit;font-size:1.2rem;padding:.7rem 1.4rem;border-radius:8px;border:0;background:#0b57d0;color:#fff;cursor:pointer}
+output{display:block;font-size:4rem;font-weight:800;text-align:center;margin-bottom:1rem}</style></head>
+<body><main><output id="n">0</output><button id="b">Click me</button>
+<p style="text-align:center;color:#555">Sample static demo living in <code>public/demos/sample-counter/</code></p></main>
+<script>var n=0;document.getElementById('b').onclick=function(){document.getElementById('n').textContent=++n}</script></body></html>

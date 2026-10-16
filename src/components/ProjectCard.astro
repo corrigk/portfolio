@@ -1,0 +1,17 @@
+---
+import { url, fmtDate } from '../lib';
+import type { CollectionEntry } from 'astro:content';
+interface Props { project: CollectionEntry<'projects'>; eager?: boolean }
+const { project: p, eager = false } = Astro.props;
+const d = p.data;
+---
+<article class="card" data-category={d.category} data-tags={d.tags.join('|').toLowerCase()} data-date={d.date.getTime()} data-title={d.title.toLowerCase()} data-text={`${d.title} ${d.summary} ${d.tags.join(' ')}`.toLowerCase()}>
+  <a class="card-link" href={url(`/projects/${p.id}/`)}>
+    <div class="card-img"><img src={url(d.cover)} alt={d.coverAlt} width="800" height="500" loading={eager ? 'eager' : 'lazy'} decoding="async" /></div>
+    <div class="card-body">
+      <p class="meta"><span class="pill">{d.category}</span><span>{fmtDate(d.date)}</span>{d.status === 'in-progress' && <span class="pill alt">in progress</span>}</p>
+      <h3>{d.title}</h3>
+      <p>{d.summary}</p>
+    </div>
+  </a>
+</article>

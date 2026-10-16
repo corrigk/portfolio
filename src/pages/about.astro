@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { getEntry, render } from 'astro:content';
+const entry = (await getEntry('pages', 'about'))!;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Base title="About" description={d.intro}>
+  <section>
+    <div class="wrap">
+      <h1>{d.title}</h1>
+      {d.intro && <p class="muted" style="font-size:1.3rem;max-width:50ch">{d.intro}</p>}
+      <div class="prose"><Content /></div>
+      {d.funItems.length > 0 && (
+        <div class="side-box" style="max-width:70ch;margin-top:2.5rem">
+          <h2>{d.funTitle || 'Fun stuff / side projects'}</h2>
+          <ul>{d.funItems.map((f) => <li>{f}</li>)}</ul>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>

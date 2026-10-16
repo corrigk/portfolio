@@ -1,0 +1,96 @@
+# Decap CMS configuration.
+# NOTE: repo / base_url / site_url below are the values to change when you move the repo or get a custom domain.
+backend:
+  name: github
+  repo: corrigk/portfolio          # owner/repo
+  branch: main
+  base_url: https://REPLACE-ME.workers.dev   # URL of your deployed oauth-proxy Cloudflare Worker (see SETUP-CMS.md)
+  auth_endpoint: auth                         # worker route that starts login
+
+local_backend: true                 # lets `npx decap-server` + `npm run dev` edit local files at /admin (ignored in production)
+
+site_url: https://corrigk.github.io/portfolio
+display_url: https://corrigk.github.io/portfolio
+publish_mode: simple                # saving = publishing (commits straight to main)
+
+media_folder: public/uploads        # where uploaded images are saved in the repo
+public_folder: /uploads             # how images are referenced (the site adds the base path itself)
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    extension: md
+    create: true
+    slug: "{{slug}}"                # the file name becomes the URL: /projects/<slug>/
+    summary: "{{title}} · {{category}}"
+    sortable_fields: [date, title]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: One-line summary, name: summary, widget: string, hint: "Shown on project cards." }
+      - { label: Category, name: category, widget: select, options: [hardware, software, fun] }
+      - { label: Tags, name: tags, widget: list, default: [], hint: "Short words like 'arduino' or 'web'. Press Enter after each." }
+      - { label: Featured on home page, name: featured, widget: boolean, default: false, hint: "Pick 2-3 projects only." }
+      - { label: Date, name: date, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { label: Status, name: status, widget: select, options: [complete, in-progress, paused], default: complete }
+      - { label: Placeholder project, name: placeholder, widget: boolean, default: false, required: false, hint: "Leave OFF for real projects." }
+      - { label: Cover image, name: cover, widget: image }
+      - { label: Cover image description (alt text), name: coverAlt, widget: string, hint: "Describe the picture for people who can't see it." }
+      - label: Gallery
+        name: gallery
+        widget: list
+        required: false
+        fields:
+          - { label: Image, name: image, widget: image }
+          - { label: Description (alt text), name: alt, widget: string }
+          - { label: Caption, name: caption, widget: string, required: false }
+      - label: Links
+        name: links
+        widget: object
+        required: false
+        fields:
+          - { label: Live demo URL, name: demo, widget: string, required: false }
+          - { label: GitHub repo URL, name: repo, widget: string, required: false }
+          - { label: Video URL (YouTube or Vimeo), name: video, widget: string, required: false }
+          - { label: Other link, name: other, widget: string, required: false }
+      - label: Embedded live demo (advanced)
+        name: demo
+        widget: object
+        required: false
+        summary: "Optional. Fill ONE of the two boxes."
+        fields:
+          - { label: External demo URL, name: url, widget: string, required: false, hint: "A web address that allows being embedded." }
+          - { label: Demo folder name, name: folder, widget: string, required: false, hint: "Name of a folder inside public/demos/ (ask the site owner to add it)." }
+          - { label: Height in pixels, name: height, widget: number, default: 520, value_type: int, min: 200, max: 1200 }
+      - { label: Tools / materials / tech used, name: specs, widget: list, default: [] }
+      - { label: Description, name: body, widget: markdown }
+
+  - name: settings
+    label: Site Settings
+    files:
+      - name: site
+        label: Site settings
+        file: src/data/site.json
+        fields:
+          - { label: Your name, name: name, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Home page intro, name: intro, widget: text }
+          - { label: Default theme, name: defaultTheme, widget: select, options: [blueprint, editorial, playful] }
+          - { label: Email, name: email, widget: string }
+          - { label: GitHub URL, name: github, widget: string }
+          - { label: LinkedIn URL, name: linkedin, widget: string }
+          - { label: Social share image, name: ogImage, widget: image, hint: "Shown when the site is shared. A JPG or PNG around 1200x630 works best." }
+
+  - name: pages
+    label: Pages
+    files:
+      - name: about
+        label: About page
+        file: src/content/pages/about.md
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Intro line, name: intro, widget: string }
+          - { label: Fun section title, name: funTitle, widget: string, required: false }
+          - { label: Fun stuff list, name: funItems, widget: list, default: [] }
+          - { label: Body, name: body, widget: markdown }

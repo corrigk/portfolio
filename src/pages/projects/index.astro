@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const categories = ['hardware', 'software', 'fun'].filter((c) => all.some((p) => p.data.category === c));
+const tags = [...new Set(all.flatMap((p) => p.data.tags.map((t) => t.toLowerCase())))].sort();
+---
+<Base title="Projects" description="All projects: software, hardware and fun builds.">
+  <section>
+    <div class="wrap">
+      <h1>Projects</h1>
+      <form class="filters" id="filters" role="search" aria-label="Filter projects" onsubmit="return false">
+        <div class="filter-row">
+          <label class="muted" for="q">Search</label>
+          <input id="q" type="search" placeholder="Search projects…" autocomplete="off" />
+          <label class="muted" for="sort">Sort</label>
+          <select id="sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A–Z</option>
+          </select>
+        </div>
+        <div class="filter-row" role="group" aria-label="Category">
+          <button type="button" class="chip" data-cat="all" aria-pressed="true">All</button>
+          {categories.map((c) => <button type="button" class="chip" data-cat={c} aria-pressed="false">{c}</button>)}
+        </div>
+        <div class="filter-row" role="group" aria-label="Tags">
+          {tags.map((t) => <button type="button" class="chip" data-tag={t} aria-pressed="false">#{t}</button>)}
+        </div>
+        <p class="muted" id="count" aria-live="polite" style="margin:0"></p>
+      </form>
+      <div class="grid" id="grid">
+        {all.map((p, i) => <ProjectCard project={p} eager={i < 3} />)}
+      </div>
+      <p class="empty" id="empty" hidden>No projects match. <button type="button" class="chip" id="reset">Clear filters</button></p>
+    </div>
+  </section>
+  <script>
+    import '../../scripts/filter';
+  </script>
+</Base>

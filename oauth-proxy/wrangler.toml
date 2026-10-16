@@ -1,0 +1,11 @@
+name = "portfolio-decap-oauth"   # change per site, e.g. portfolio-joshua-decap-oauth
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# Origin (scheme + host, no path, no trailing slash) of the site that hosts /admin.
+ALLOWED_ORIGIN = "https://corrigk.github.io"
+
+# Secrets are NOT stored here. Set them with:
+#   npx wrangler secret put GITHUB_CLIENT_ID
+#   npx wrangler secret put GITHUB_CLIENT_SECRET

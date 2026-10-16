@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getEntry, render } from 'astro:content';
+import { getTimeline, fmtYM, TYPE_SINGULAR } from '../timeline';
+import { url } from '../lib';
+const { dated } = await getTimeline();
+const recent = dated.filter((i) => i.type !== 'project').slice(0, 5);
 const entry = (await getEntry('pages', 'about'))!;
 const { Content } = await render(entry);
 const d = entry.data;
@@ -16,6 +20,13 @@ const d = entry.data;
         <div class="side-box" style="max-width:70ch;margin-top:2.5rem">
           <h2>{d.funTitle || 'Fun stuff / side projects'}</h2>
           <ul>{d.funItems.map((f) => <li>{f}</li>)}</ul>
+        </div>
+      )}
+      {recent.length > 0 && (
+        <div class="side-box" style="max-width:70ch">
+          <h2>Recent log entries</h2>
+          <ul class="recent-log">{recent.map((i) => <li><span class="when">{fmtYM(i.date)}</span><span><b>{i.title}</b> <span class="muted">· {TYPE_SINGULAR[i.type]}{i.place ? ` · ${i.place}` : ''}</span></span></li>)}</ul>
+          <a href={url('/timeline/')}>See the full timeline →</a>
         </div>
       )}
     </div>

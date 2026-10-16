@@ -36,4 +36,18 @@ const pages = defineCollection({
   schema: z.object({ title: z.string(), intro: z.string().optional(), funTitle: z.string().optional(), funItems: z.array(z.string()).default([]) }),
 });
 
-export const collections = { projects, pages };
+const timeline = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/timeline' }),
+  schema: z.object({
+    title: z.string(),
+    type: z.enum(['work', 'education', 'home', 'milestone', 'idea', 'project']),
+    date: z.coerce.date().optional(),   // start date; ideas may leave it empty
+    end: z.coerce.date().optional(),
+    ongoing: z.boolean().default(false),
+    place: z.string().optional(),
+    link: z.string().optional(),
+    placeholder: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, pages, timeline };

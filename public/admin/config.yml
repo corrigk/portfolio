@@ -75,6 +75,34 @@ collections:
           - { label: Value, name: value, widget: string }
       - { label: Description, name: body, widget: markdown }
 
+  - name: timeline
+    label: Timeline
+    label_singular: Timeline entry
+    folder: src/content/timeline
+    extension: md
+    create: true
+    slug: "{{slug}}"
+    summary: "{{type}} · {{title}}"
+    description: "Jobs, school, places you've lived, milestones and ideas. Projects are added to the timeline automatically."
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Type
+        name: type
+        widget: select
+        options:
+          - { label: Work, value: work }
+          - { label: Education, value: education }
+          - { label: Place lived, value: home }
+          - { label: Milestone, value: milestone }
+          - { label: Idea (future plan; no date needed), value: idea }
+      - { label: Start date, name: date, widget: datetime, required: false, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", hint: "Leave empty for ideas." }
+      - { label: End date, name: end, widget: datetime, required: false, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { label: Still going?, name: ongoing, widget: boolean, default: false, required: false, hint: "Shows 'Present' as the end date." }
+      - { label: Place, name: place, widget: string, required: false, hint: "e.g. West Lafayette, IN" }
+      - { label: Link, name: link, widget: string, required: false, hint: "Optional web address, or a page on this site like /projects/my-project/" }
+      - { label: Placeholder entry, name: placeholder, widget: boolean, default: false, required: false }
+      - { label: Description, name: body, widget: markdown, required: false }
+
   - name: settings
     label: Site Settings
     files:

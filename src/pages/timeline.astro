@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import TLIcon from '../components/TLIcon.astro';
+import { getTimeline, TYPE_LABELS, TYPE_SINGULAR, fmtYM, type TLType } from '../timeline';
+import { motif } from '../lib';
+
+const { dated, ideas } = await getTimeline();
+const types = (Object.keys(TYPE_LABELS) as TLType[]).filter((t) => t !== 'idea' && dated.some((i) => i.type === t));
+const hasPlaceholders = [...dated, ...ideas].some((i) => i.placeholder);
+
+// Group by year so we can print big year markers.
+const years: { year: number; items: typeof dated }[] = [];
+for (const it of dated) {
+  const y = it.date!.getUTCFullYear();
+  if (!years.length || years[years.length - 1].year !== y) years.push({ year: y, items: [] });
+  years[years.length - 1].items.push(it);
+}
+const range = (i: (typeof dated)[number]) =>
+  i.ongoing ? `${fmtYM(i.date)} — Present` : i.end ? `${fmtYM(i.date)} — ${fmtYM(i.end)}` : fmtYM(i.date);
+---
+<Base title="Timeline" description="Work, projects, places lived and ideas, on one timeline.">
+  {hasPlaceholders && <div class="placeholder-note">Placeholder timeline: replace entries in the CMS (Timeline).</div>}
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Flight log</p>
+      <h1>Timeline</h1>
+      <p class="muted" style="max-width:56ch">Work, projects, places I've called home, and the ideas still waiting on the runway.</p>
+
+      <div class="filter-row tl-filters" role="group" aria-label="Show entries">
+        <button type="button" class="chip" data-tl="all" aria-pressed="true">All</button>
+        {types.map((t) => <button type="button" class="chip" data-tl={t} aria-pressed="false"><TLIcon type={t} />{TYPE_LABELS[t]}</button>)}
+      </div>
+
+      <div class="tl-track" data-motif={motif}>
+        <span class="tl-craft" aria-hidden="true">
+          {motif === 'aircraft'
+            ? <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 22l-1.2-4.4-.9-3.4L1 8.5V6.6l9.1 2.8.4-5.3L8 2.3V1l4 .9L16 1v1.3l-2.5 1.8.4 5.3L23 6.6v1.9l-8.9 5.7-.9 3.4z" fill="currentColor"/></svg>
+            : <svg viewBox="0 0 24 24" width="20" height="22"><path d="M12 23c-4-3-5-8-4.4-13h8.8C17 15 16 20 12 23zM8 12l-3 4h3.3M16 12l3 4h-3.3" fill="currentColor"/><path d="M10.5 3.5 12 0l1.5 3.5" fill="#daaa00"/></svg>}
+        </span>
+        <ol class="tl-list">
+          {years.map((y) => (
+            <li class="tl-year" data-year={y.year}>
+              <h2 class="tl-year-label">{y.year}</h2>
+              <ol>
+                {y.items.map((it) => (
+                  <li class="tl-item" data-type={it.type}>
+                    <span class="tl-node"><TLIcon type={it.type} /></span>
+                    <article class="tl-card">
+                      <p class="tl-meta"><span class="tl-type">{TYPE_SINGULAR[it.type]}</span><span class="tl-date">{range(it)}</span></p>
+                      <h3>{it.link ? <a href={it.link}>{it.title}</a> : it.title}</h3>
+                      {it.place && <p class="tl-place">{it.place}</p>}
+                      {it.summary && <p class="tl-text">{it.summary}</p>}
+                      {it.Content && <div class="tl-text"><it.Content /></div>}
+                    </article>
+                  </li>
+                ))}
+              </ol>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <p class="empty" id="tl-empty" hidden>Nothing logged in this category yet.</p>
+    </div>
+  </section>
+
+  {ideas.length > 0 && (
+    <section class="ideas" aria-labelledby="ideas-h">
+      <div class="wrap">
+        <p class="eyebrow">Next up</p>
+        <h2 id="ideas-h">Ideas on the runway</h2>
+        <ul class="idea-grid">
+          {ideas.map((it, i) => (
+            <li class="idea-card">
+              <span class="idea-num">IDEA-{String(i + 1).padStart(2, '0')}</span>
+              <h3>{it.link ? <a href={it.link}>{it.title}</a> : it.title}</h3>
+              {it.Content && <div class="tl-text"><it.Content /></div>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+  <script>
+    import '../scripts/timeline';
+  </script>
+</Base>

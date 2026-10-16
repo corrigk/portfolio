@@ -2,10 +2,11 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import HeroArt from '../components/HeroArt.astro';
+import AircraftArt from '../components/AircraftArt.astro';
 import Starfield from '../components/Starfield.astro';
 import Telemetry from '../components/Telemetry.astro';
 import { getCollection } from 'astro:content';
-import { site, url, categoryOrder } from '../lib';
+import { site, url, categoryOrder, motif } from '../lib';
 
 const all = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const featured = all.filter((p) => p.data.featured).slice(0, 3);
@@ -26,7 +27,7 @@ const hasPlaceholders = all.some((p) => p.data.placeholder);
           {site.resume && <a class="btn ghost" href={url(site.resume)} download>Résumé ↓</a>}
         </div>
       </div>
-      <HeroArt />
+      {motif === 'aircraft' ? <AircraftArt /> : <HeroArt />}
     </div>
   </section>
 

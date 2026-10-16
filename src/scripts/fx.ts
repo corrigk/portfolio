@@ -7,12 +7,15 @@ root.classList.add('js');
    Clicking an internal link launches a tiny rocket along the header's gold rule, then navigates. */
 const ROCKET = `<svg viewBox="0 0 48 20" width="48" height="20" aria-hidden="true"><path d="M2 10h14" stroke="url(#fl)" stroke-width="4" stroke-linecap="round"/><defs><linearGradient id="fl"><stop offset="0" stop-color="#daaa00" stop-opacity="0"/><stop offset="1" stop-color="#daaa00"/></linearGradient></defs><path d="M16 5h18c6 0 10 3 12 5-2 2-6 5-12 5H16z" fill="#f5f3ee"/><path d="M16 5l-4-4h8l4 4zM16 15l-4 4h8l4-4z" fill="#cfb991"/><circle cx="33" cy="10" r="2.2" fill="#08080a"/></svg>`;
 
+// Top view of a swept-wing jet, nose pointing right, with a contrail.
+const JET = `<svg viewBox="0 0 64 28" width="64" height="28" aria-hidden="true"><path d="M0 14h22" stroke="url(#ct)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="ct"><stop offset="0" stop-color="#f5f3ee" stop-opacity="0"/><stop offset="1" stop-color="#f5f3ee" stop-opacity=".7"/></linearGradient></defs><path d="M62 14l-6-2.2-8-.8-10-9.5h-4l5 9.4-9 .3-4.5-4.7h-2.5l2 5.2-2 .3v4l2 .3-2 5.2h2.5l4.5-4.7 9 .3-5 9.4h4l10-9.5 8-.8z" fill="#cfb991" stroke="#08080a" stroke-width=".6"/></svg>`;
+
 function launch(href: string) {
   const header = document.querySelector('.site-header');
   const y = header ? header.getBoundingClientRect().bottom - 11 : 40;
   const el = document.createElement('div');
   el.className = 'rocket-fly';
-  el.innerHTML = ROCKET;
+  el.innerHTML = root.dataset.motif === 'aircraft' ? JET : ROCKET;
   el.style.top = `${Math.max(0, y)}px`;
   document.body.appendChild(el);
   const anim = el.animate(
@@ -40,7 +43,7 @@ if (!reduced) {
 }
 
 /* ---------- Scroll reveal for cards ---------- */
-const revealables = document.querySelectorAll<HTMLElement>('.card, .side-box, .t-cell, .gallery button');
+const revealables = document.querySelectorAll<HTMLElement>('.card, .side-box, .t-cell, .gallery button, .tl-card, .idea-card');
 if (!reduced && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => {

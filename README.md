@@ -67,6 +67,24 @@ Images go in `public/uploads/` and are referenced as `/uploads/name.jpg` (the si
 
 Placeholder projects have `placeholder: true`. Delete those files when you have real ones (and the matching `public/uploads/<slug>*.svg`).
 
+## Timeline
+
+The **Timeline** page (`/timeline/`) mixes jobs, school, places lived, milestones and ideas, plus every project automatically (turn that off with `timelineIncludesProjects: false` in `site.config.mjs`). Each entry is a file in `src/content/timeline/`, editable in the CMS under *Timeline*:
+
+```yaml
+---
+title: Software Engineering Intern, Acme
+type: work            # work | education | home | milestone | idea
+date: 2025-05-19      # start (leave out for ideas)
+end: 2025-08-08       # or: ongoing: true
+place: Chicago, IL
+link: https://...     # optional
+---
+Optional short description.
+```
+
+Ideas appear in an "Ideas on the runway" section. The About page shows the five most recent entries.
+
 ## Live demos
 
 Add a `demo:` block to a project's frontmatter. It renders in a sandboxed iframe with a loading state and an "Open in new tab" fallback.
@@ -91,7 +109,8 @@ One theme: black and old gold (Purdue-inspired, not an official Purdue site) wit
 
 All optional polish lives in `src/scripts/fx.ts` and `src/styles/fx.css`; every animation is disabled for visitors with *reduce motion* turned on.
 
-- **Rocket transition:** clicking an internal link sends a tiny rocket along the header's gold rule, then the page cross-fades (View Transitions).
+- **Motif:** `motif` in `site.config.mjs` picks the decorations: `aircraft` (rotating B-1B wireframe with sweeping wings and a live HUD, jet page transitions; code in `src/scripts/aircraft.ts`) or `space` (constellation, rockets).
+- **Rocket/jet transition:** clicking an internal link sends a tiny rocket along the header's gold rule, then the page cross-fades (View Transitions).
 - **Hero:** twinkling starfield plus the Cygnus constellation (it looks like an aircraft) drawing itself in and slowly rotating, with a satellite on an orbit (`src/components/HeroArt.astro`).
 - **Telemetry strip** on the home page with live counts per category (`categoryOrder` in `site.config.mjs` sets the order).
 - **Fuel gauge:** a gold reading-progress bar with a rocket tip on project pages.

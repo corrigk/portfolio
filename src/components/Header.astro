@@ -1,7 +1,7 @@
 ---
 import { site, url } from '../lib';
 const path = Astro.url.pathname;
-const links = [['Projects', '/projects/'], ['About', '/about/'], ['Contact', '/contact/']];
+const links = [['Projects', '/projects/'], ['Timeline', '/timeline/'], ['About', '/about/'], ['Contact', '/contact/']];
 const isActive = (h: string) => path.startsWith(url(h));
 ---
 <header class="site-header">

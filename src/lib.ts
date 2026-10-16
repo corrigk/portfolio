@@ -2,6 +2,8 @@ import cfg from '../site.config.mjs';
 import site from './data/site.json';
 
 export { site };
+export const motif: 'aircraft' | 'space' = cfg.motif === 'aircraft' ? 'aircraft' : 'space';
+export const timelineIncludesProjects: boolean = cfg.timelineIncludesProjects !== false;
 export const categoryOrder: string[] = cfg.categoryOrder || ['hardware', 'software', 'fun'];
 export const base = (cfg.base || '').replace(/\/$/, '');
 

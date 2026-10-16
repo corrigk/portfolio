@@ -30,6 +30,10 @@ Click **Projects**, click the project, change what you want, then **Publish → 
 - **Pages → About page**: your story and the "Fun stuff" list.
 - **Site Settings**: your name, tagline, email, links.
 
+## Adding to your timeline
+
+Click **Timeline**, then **New Timeline entry**. Pick a type (Work, Education, Place lived, Milestone or Idea), add a start date (skip it for ideas), and tick **Still going?** if it hasn't ended. Projects show up on the timeline by themselves, so you don't need to add them twice.
+
 ## When does it go live?
 
 About **1-2 minutes** after pressing Publish. Refresh the website to see it. (If you don't see it, wait a minute and refresh again.)

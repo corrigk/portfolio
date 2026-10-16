@@ -64,7 +64,7 @@ nav a { color: #c9c4b9; text-decoration: none; font-size: .78rem; font-weight: 6
 nav a:hover, nav a[aria-current] { color: #fff; border-bottom-color: var(--gold); }
 .icon-btn { font: inherit; font-size: 1rem; line-height: 1; background: transparent; color: #f5f3ee; border: 1px solid rgb(255 255 255 / .22); border-radius: 8px; width: 2.2rem; height: 2.2rem; cursor: pointer; }
 .icon-btn:hover { background: var(--gold); color: #0b0b0b; border-color: var(--gold); }
-@media (max-width: 640px) { nav { order: 3; flex-basis: 100%; gap: 1.25rem; } .icon-btn { margin-left: auto; } }
+@media (max-width: 640px) { nav { order: 3; flex-basis: 100%; gap: 1rem; } nav a { letter-spacing: .08em; } .icon-btn { margin-left: auto; } }
 
 /* ---------- COMPONENTS ---------- */
 .btn { display: inline-block; font: inherit; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; text-decoration: none; padding: .85rem 1.5rem; border: 1px solid var(--gold); border-radius: 8px; background: var(--gold); color: #0b0b0b; cursor: pointer; transition: background .15s, border-color .15s, transform .15s; }

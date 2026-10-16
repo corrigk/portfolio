@@ -1,19 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
 import Starfield from '../components/Starfield.astro';
-import { url } from '../lib';
+import { url, motif } from '../lib';
+const air = motif === 'aircraft';
 ---
-<Base title="Signal lost" description="This page drifted out of orbit.">
+<Base title={air ? 'Radar contact lost' : 'Signal lost'} description="Page not found.">
   <section class="hero lost">
     <Starfield />
     <div class="wrap">
-      <p class="eyebrow">Error 404 · Signal lost</p>
-      <h1>Lost in space</h1>
-      <p class="lead">This page drifted out of orbit. It may have moved, or it never launched.</p>
+      <p class="eyebrow">Error 404 · {air ? 'Radar contact lost' : 'Signal lost'}</p>
+      <h1>{air ? 'Off course' : 'Lost in space'}</h1>
+      <p class="lead">{air ? 'This page flew off the map. It may have moved, or it was never on the flight plan.' : 'This page drifted out of orbit. It may have moved, or it never launched.'}</p>
       <div class="actions">
         <a class="btn" href={url('/')}>Return to base</a>
         <a class="btn ghost" href={url('/projects/')}>View projects</a>
       </div>
+      {air ? (
+        <svg class="drifter" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 8l6 22 4 14 34 30v8L70 66l-2 22 12 10v6l-20-6-20 6v-6l12-10-2-22-34 16v-8l34-30 4-14z" fill="var(--surface)" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round"/></svg>
+      ) : (
       <svg class="drifter" viewBox="0 0 120 120" aria-hidden="true">
         <g fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round">
           <path d="M60 14c14 12 20 30 18 52H42c-2-22 4-40 18-52z" fill="var(--surface)" />
@@ -23,6 +27,7 @@ import { url } from '../lib';
         </g>
         <path d="M54 82q6 18 12 0" fill="#daaa00" opacity=".8" />
       </svg>
+      )}
     </div>
   </section>
 </Base>

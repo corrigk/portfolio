@@ -63,6 +63,7 @@ collections:
           - { label: External demo URL, name: url, widget: string, required: false, hint: "A web address that allows being embedded." }
           - { label: Demo folder name, name: folder, widget: string, required: false, hint: "Name of a folder inside public/demos/ (ask the site owner to add it)." }
           - { label: Height in pixels, name: height, widget: number, default: 520, value_type: int, min: 200, max: 1200 }
+      - { label: 3D model (.glb), name: model, widget: file, required: false, hint: "Optional. Export your CAD as .glb to show an interactive 3D viewer on the project page." }
       - { label: Tools / materials / tech used, name: specs, widget: list, default: [] }
       - label: Spec sheet (numbers and facts)
         name: specSheet

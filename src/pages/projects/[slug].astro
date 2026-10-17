@@ -48,6 +48,15 @@ const linkItems = [
           </section>
         )}
 
+        {d.model && (
+          <section style="padding-block:2rem 0" aria-labelledby="model-h">
+            <h2 id="model-h">3D model</h2>
+            <model-viewer class="model-viewer" src={url(d.model)} alt={`3D model of ${d.title}`} camera-controls auto-rotate shadow-intensity="0.6" exposure="1.1" loading="lazy"></model-viewer>
+            <p class="demo-actions"><span>Drag to rotate · scroll or pinch to zoom</span></p>
+            <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js" is:inline></script>
+          </section>
+        )}
+
         {embed && (
           <section style="padding-block:2rem 0" aria-labelledby="vid-h">
             <h2 id="vid-h">Video</h2>

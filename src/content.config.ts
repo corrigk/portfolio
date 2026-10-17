@@ -27,6 +27,7 @@ const projects = defineCollection({
       height: z.number().default(520),
     }).optional(),
     specs: z.array(z.string()).default([]),
+    model: z.string().optional(), // .glb file shown in an interactive 3D viewer
     specSheet: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
   }),
 });

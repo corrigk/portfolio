@@ -190,3 +190,4 @@ section h2.tl-year-label::before { display: none; }
 .adi-ladder { stroke: var(--muted); stroke-width: .7; opacity: .8; }
 .adi-ring { fill: none; stroke: var(--accent); stroke-width: 1; opacity: .6; }
 .adi-plane { fill: none; stroke: #daaa00; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.model-viewer { display: block; width: 100%; height: 440px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); --poster-color: transparent; }

@@ -151,6 +151,92 @@ for (const side of [1, -1]) { // J58 nacelles with inlet spikes
 }
 sr71.normalize();
 
+/* ---------- shared moving parts ---------- */
+/** A variable-sweep outer wing panel (raw units), rotated about its pivot by `sweep` degrees; mirrored. */
+function sweptPanels(pivot: [number, number], base: [number, number][], sweep: number, z: number): Seg[] {
+  const s: Seg[] = [];
+  const t = rad(sweep);
+  for (const side of [1, -1]) {
+    const p: V[] = base.map(([x, y]) => [pivot[0] + x * Math.cos(t) - y * Math.sin(t), side * (pivot[1] + x * Math.sin(t) + y * Math.cos(t)), z]);
+    for (let i = 0; i < p.length; i++) s.push([p[i], p[(i + 1) % p.length]]);
+  }
+  return s;
+}
+/** Propeller blades (raw units) spinning in the y-z plane at hub (x, y, z). */
+function prop(hub: V, r: number, blades: number, angle: number): Seg[] {
+  const s: Seg[] = [];
+  for (let b = 0; b < blades; b++) {
+    const a = angle + (b / blades) * Math.PI * 2, w = 0.16;
+    const tip: V = [hub[0], hub[1] + r * Math.cos(a), hub[2] + r * Math.sin(a)];
+    const l: V = [hub[0], hub[1] + r * 0.55 * Math.cos(a - w), hub[2] + r * 0.55 * Math.sin(a - w)];
+    const rr: V = [hub[0], hub[1] + r * 0.55 * Math.cos(a + w), hub[2] + r * 0.55 * Math.sin(a + w)];
+    s.push([hub, l], [l, tip], [tip, rr], [rr, hub]);
+  }
+  for (let i = 0; i < 24; i++) { // faint disc edge (every other arc segment)
+    if (i % 2) continue;
+    const a0 = (i / 24) * Math.PI * 2, a1 = ((i + 1) / 24) * Math.PI * 2;
+    s.push([[hub[0], hub[1] + r * Math.cos(a0), hub[2] + r * Math.sin(a0)], [hub[0], hub[1] + r * Math.cos(a1), hub[2] + r * Math.sin(a1)]]);
+  }
+  return s;
+}
+const mapSegs = (sh: Shape, segs: Seg[]): Seg[] => segs.map(([a, b]) => [sh.tf(a), sh.tf(b)] as Seg);
+const propAngle = (t: number, speed = 0.011) => t * speed;
+
+/* ---------- F-14 Tomcat (variable sweep; units: feet) ---------- */
+const f14 = new Shape()
+  .loft([[27, 1, 1.1, 0], [22, 2, 2, 0.3], [16, 2.5, 2.4, 0.6], [10, 3, 2.3, 0.4], [0, 3, 2, 0.2], [-12, 2.4, 1.6, 0.2], [-20, 1.6, 1.2, 0.3]], { nose: [31.3, 0, -0.2] })
+  .loft([[19, 0.2, 0.2, 2.4], [16, 1.2, 1.1, 2.9], [10, 1.1, 0.9, 2.8], [7, 0.3, 0.3, 2.3]])                 // tandem canopy
+  .mirror([[12, 3, 0.3], [-1, 9.5, 0.3], [-14, 9.5, 0.3], [-20, 5, 0.3]])                                 // glove
+  .mirror([[-20, 6, 0.2], [-29, 15, 0.2], [-32, 15, 0.2], [-31, 5.5, 0.2]])                               // stabilators
+  .mirror([[-15, 4.5, 2.4], [-25, 5.6, 12.5], [-28.5, 5.6, 12.5], [-28, 4.5, 2.4]]);                     // twin fins
+for (const side of [1, -1]) {
+  const y0 = 4.5 * side; // box intakes flowing into round nacelles
+  f14.poly([[9, y0 - 1.6, 1.6], [9, y0 + 1.6, 1.6], [9, y0 + 1.6, -1.8], [9, y0 - 1.6, -1.8]])
+    .loft([[6, 1.8, 1.8, -0.2], [-10, 1.9, 1.9, -0.2], [-26, 1.7, 1.7, -0.2], [-29, 1.5, 1.5, -0.2]], { K: 10, y: y0 })
+    .poly([[9, y0 - 1.6, 1.6], [6, y0 - 1.8, -0.2]], false).poly([[9, y0 + 1.6, -1.8], [6, y0 + 1.8, -0.2]], false);
+}
+f14.normalize();
+const f14SweepAt = (t: number) => 44 - 24 * Math.cos((t / 1000) * ((Math.PI * 2) / 13) + 1.3);
+const f14Wings = (t: number) => mapSegs(f14, sweptPanels([-6, 9.5], [[3, 0], [0, 22.5], [-5, 22.5], [-9, 0]], f14SweepAt(t), 0.4));
+const f14Tip = (t: number): V[] => {
+  const a = rad(f14SweepAt(t));
+  return [f14.tf([-6 + -2.5 * Math.cos(a) - 22.5 * Math.sin(a), 9.5 + -2.5 * Math.sin(a) + 22.5 * Math.cos(a), 0.4])];
+};
+
+/* ---------- P-51 Mustang (units: feet) ---------- */
+const p51 = new Shape()
+  .loft([[15.5, 1.9, 2, 0], [13, 2.1, 2.4, 0.1], [8, 2.1, 2.6, 0.4], [2, 1.9, 2.8, 0.6], [-4, 1.6, 2.4, 0.4], [-10, 1.1, 1.8, 0.3], [-15, 0.4, 0.9, 0.4]], { nose: [17.6, 0, 0] })
+  .loft([[5, 0.2, 0.2, 2.9], [2.5, 1, 1.1, 3.3], [-1, 0.9, 1, 3.1], [-3, 0.2, 0.2, 2.6]])                  // bubble canopy
+  .poly([[-0.5, -0.7, -2.5], [-0.5, 0.7, -2.5], [-0.5, 0.7, -3.6], [-0.5, -0.7, -3.6]])                    // belly scoop
+  .mirror([[-0.5, 0.7, -3.6], [-7, 0.5, -2.4]], false)
+  .mirror([[6, 2, -1.5], [2.5, 18.5, -0.3], [-0.5, 18.5, -0.3], [-3.5, 2, -1.5]])                         // laminar-flow wing
+  .mirror([[-12, 1, 0.6], [-14, 6.5, 0.6], [-16, 6.5, 0.6], [-16.2, 0.8, 0.6]])                            // tailplane
+  .poly([[-11, 0, 1.6], [-14.5, 0, 6.2], [-16.5, 0, 6.2], [-16.5, 0, 0.9]]);                               // fin
+p51.normalize();
+const p51Prop = (t: number) => mapSegs(p51, prop([16.6, 0, 0], 5.6, 4, propAngle(t)));
+
+/* ---------- C-130 Hercules (units: feet) ---------- */
+const c130 = new Shape()
+  .loft([[46, 3, 3, 0], [42, 5, 5.2, 0.5], [30, 6.5, 6.5, 0.5], [0, 6.5, 6.5, 0.5], [-20, 6.3, 6.2, 1], [-30, 5, 4.8, 2], [-40, 2.5, 2.5, 4], [-46, 1, 1.2, 5]], { nose: [48.5, 0, -0.5] })
+  .poly([[43, -2, 4.2], [43, 2, 4.2], [41, 3.2, 5.4], [41, -3.2, 5.4]])                                   // flight-deck windows
+  .mirror([[14, 6, 6.8], [9, 66, 6.8], [2, 66, 6.8], [-2, 6, 6.8]])                                       // high wing
+  .mirror([[-36, 2, 5], [-42, 26, 5], [-48, 26, 5], [-48, 2, 5]])                                          // tailplane
+  .poly([[-30, 0, 7], [-42, 0, 26], [-48, 0, 26], [-47, 0, 6]]);                                          // fin
+for (const y of [18, 36, -18, -36]) c130.loft([[20, 1.4, 1.4, 5.4], [17, 2.1, 2.3, 5.4], [4, 2.1, 2.3, 5.6], [-2, 1.4, 1.4, 6]], { K: 8, y });
+c130.normalize();
+const c130Props = (t: number) => mapSegs(c130, [18, 36, -18, -36].flatMap((y, i) => prop([20.6, y, 5.4], 6.75, 4, propAngle(t, 0.012) + i * 0.4)));
+
+/* ---------- X-15 (rocket plane; units: feet) ---------- */
+const x15 = new Shape()
+  .loft([[23, 1, 1, 0], [19, 2, 2, 0.1], [12, 2.3, 2.4, 0.3], [0, 2.3, 2.3, 0], [-20, 2.3, 2.3, 0], [-25, 2, 2, 0]], { nose: [25.5, 0, -0.1] })
+  .loft([[14, 0.2, 0.2, 2.3], [12, 0.9, 0.7, 2.6], [9, 0.8, 0.6, 2.5], [7.5, 0.2, 0.2, 2.2]])              // canopy
+  .mirror([[14, 2.3, 0.6], [14, 3, 0.6], [-18, 3, 0.6], [-18, 2.3, 0.6]], false)                          // side tunnels
+  .mirror([[-2, 2.3, 0], [-8, 11.2, 0], [-11, 11.2, 0], [-12, 2.3, 0]])                                   // wing
+  .mirror([[-17, 2.3, 0], [-22, 9, -1.5], [-25, 9, -1.5], [-24.5, 2.3, 0]])                               // anhedral stabilators
+  .poly([[-15, 0, 2.3], [-21, 0, 9], [-25, 0, 9], [-25, 0, 2.3]])                                          // dorsal wedge fin
+  .poly([[-17, 0, -2.3], [-21, 0, -7], [-25, 0, -7], [-25, 0, -2.3]]);                                     // ventral wedge fin
+x15.normalize();
+
 /* ---------- aircraft list ---------- */
 interface Exhaust { p: V; r: number }
 interface Model {
@@ -160,6 +246,7 @@ interface Model {
   fighter?: boolean;        // agile enough for full aileron rolls
   tips: (t: number) => V[]; // right wingtip(s) for vapor trails (mirrored to the left)
   mach: number;             // cruise Mach for the HUD
+  specs: [string, string][]; // spec card on the hangar page
 }
 /** Nozzles given for the right side (y > 0) are mirrored; `sh` maps raw units onto a normalized model. */
 const nozzles = (pts: V[], r: number, sh?: Shape): Exhaust[] =>
@@ -171,17 +258,71 @@ const b1Tip = (t: number): V[] => {
 };
 const MODELS: Model[] = [
   { name: 'B-1B Lancer', label: 'Wing sweep', value: (t) => `${sweepAt(t).toFixed(1)}°`, segs: (t) => b1Body.s.concat(b1Wings(sweepAt(t))),
-    dwell: 16, scale: 1, exhausts: nozzles([[-0.47, 0.137, -0.085], [-0.47, 0.183, -0.085]], 0.02), burner: true, tips: b1Tip, mach: 0.85 },
+    dwell: 16, scale: 1, exhausts: nozzles([[-0.47, 0.137, -0.085], [-0.47, 0.183, -0.085]], 0.02), burner: true, tips: b1Tip, mach: 0.85,
+    specs: [['Role', 'Strategic bomber'], ['First flight', '1984'], ['Crew', '4'], ['Top speed', 'Mach 1.25'], ['Wingspan', '137 ft spread · 79 ft swept'], ['Engines', '4 × GE F101 afterburning turbofans']] },
+  { name: 'F-14 Tomcat', label: 'Wing sweep', value: (t) => `${f14SweepAt(t).toFixed(1)}°`, segs: (t) => f14.s.concat(f14Wings(t)), dwell: 13, scale: 1,
+    exhausts: nozzles([[-29.2, 4.5, -0.2]], 1.5, f14), burner: true, fighter: true, tips: f14Tip, mach: 0.9,
+    specs: [['Role', 'Carrier-based fighter'], ['First flight', '1970'], ['Crew', '2'], ['Top speed', 'Mach 2.34'], ['Wingspan', '64 ft spread · 38 ft swept'], ['Engines', '2 × afterburning turbofans']] },
   { name: 'A-10 Thunderbolt II', label: 'Role', value: () => 'Close air support', segs: () => a10.s, dwell: 12, scale: 0.98,
-    exhausts: nozzles([[-16.7, 5.2, 4.6]], 1.6, a10), burner: false, fighter: true, tips: () => [a10.tf([-1, 28.7, -0.4])], mach: 0.45 },
+    exhausts: nozzles([[-16.7, 5.2, 4.6]], 1.6, a10), burner: false, fighter: true, tips: () => [a10.tf([-1, 28.7, -0.4])], mach: 0.45,
+    specs: [['Role', 'Close air support'], ['First flight', '1972'], ['Crew', '1'], ['Gun', 'GAU-8 Avenger, 30 mm'], ['Wingspan', '57 ft 6 in'], ['Engines', '2 × GE TF34 turbofans']] },
+  { name: 'P-51 Mustang', label: 'Engine', value: () => 'Packard Merlin', segs: (t) => p51.s.concat(p51Prop(t)), dwell: 12, scale: 1,
+    exhausts: nozzles([[11, 2.2, 0.8]], 0.5, p51), burner: false, fighter: true, tips: () => [p51.tf([1, 18.5, -0.3])], mach: 0.55,
+    specs: [['Role', 'Long-range escort fighter'], ['First flight', '1940'], ['Crew', '1'], ['Top speed', '437 mph (P-51D)'], ['Wingspan', '37 ft'], ['Engine', 'Packard V-1650 Merlin V-12']] },
   { name: 'B-2 Spirit', label: 'Wingspan', value: () => '172 ft', segs: () => b2.s, dwell: 12, scale: 1.05, elev: 40,
-    exhausts: nozzles([[-16.5, 17, 1]], 2, b2), burner: false, tips: () => [b2.tf([-28, 86, 0.6])], mach: 0.78 },
+    exhausts: nozzles([[-16.5, 17, 1]], 2, b2), burner: false, tips: () => [b2.tf([-28, 86, 0.6])], mach: 0.78,
+    specs: [['Role', 'Stealth strategic bomber'], ['First flight', '1989'], ['Crew', '2'], ['Speed', 'High subsonic'], ['Wingspan', '172 ft'], ['Engines', '4 × GE F118 turbofans']] },
+  { name: 'C-130 Hercules', label: 'Role', value: () => 'Tactical airlift', segs: (t) => c130.s.concat(c130Props(t)), dwell: 12, scale: 1, elev: 26,
+    exhausts: [], burner: false, tips: () => [c130.tf([5, 66, 6.8])], mach: 0.5,
+    specs: [['Role', 'Tactical airlift'], ['First flight', '1954'], ['Engines', '4 × turboprops'], ['Wingspan', '132 ft 7 in'], ['Known for', 'Short, rough-field landings'], ['In service', 'Since the 1950s']] },
   { name: 'F-22 Raptor', label: 'Top speed', value: () => 'Mach 2+', segs: () => f22.s, dwell: 12, scale: 0.98,
-    exhausts: nozzles([[-30.2, 2.5, 0]], 1.1, f22), burner: true, fighter: true, tips: () => [f22.tf([-9, 22.25, 0])], mach: 0.95 },
+    exhausts: nozzles([[-30.2, 2.5, 0]], 1.1, f22), burner: true, fighter: true, tips: () => [f22.tf([-9, 22.25, 0])], mach: 0.95,
+    specs: [['Role', 'Air superiority'], ['First flight', '1997'], ['Crew', '1'], ['Top speed', 'Mach 2+'], ['Wingspan', '44 ft 6 in'], ['Engines', '2 × P&W F119, thrust vectoring']] },
+  { name: 'X-15', label: 'Top speed', value: () => 'Mach 6.7', segs: () => x15.s, dwell: 12, scale: 1,
+    exhausts: [{ p: x15.tf([-25.6, 0, 0]), r: 1.7 * x15.k }], burner: true, tips: () => [x15.tf([-9.5, 11.2, 0])], mach: 2.2,
+    specs: [['Role', 'Hypersonic research'], ['First flight', '1959'], ['Crew', '1'], ['Top speed', 'Mach 6.7'], ['Wingspan', '22 ft'], ['Engine', 'XLR99 rocket']] },
   { name: 'SR-71 Blackbird', label: 'Top speed', value: () => 'Mach 3.3', segs: () => sr71.s, dwell: 12, scale: 1,
-    exhausts: nozzles([[-48.6, 13.5, 0]], 2.3, sr71), burner: true, tips: () => [sr71.tf([-38, 27.8, 0])], mach: 3.1 },
+    exhausts: nozzles([[-48.6, 13.5, 0]], 2.3, sr71), burner: true, tips: () => [sr71.tf([-38, 27.8, 0])], mach: 3.1,
+    specs: [['Role', 'Strategic reconnaissance'], ['First flight', '1964'], ['Crew', '2'], ['Top speed', 'Mach 3.2+'], ['Wingspan', '55 ft 7 in'], ['Engines', '2 × P&W J58']] },
 ];
 const FADE = 1.8; // seconds for the scan-line swap between aircraft
+type EngineKind = 'jet' | 'prop' | 'rocket';
+const slugOf = (m: Model) => m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const engineOf = (m: Model): EngineKind => (/P-51|C-130/.test(m.name) ? 'prop' : m.name === 'X-15' ? 'rocket' : 'jet');
+
+/* ---------- optional engine sound (Web Audio, synthesized, off until the visitor turns it on) ---------- */
+class EngineSound {
+  ctx: AudioContext;
+  master: GainNode; noiseF: BiquadFilterNode; osc: OscillatorNode; oscGain: GainNode; trem: OscillatorNode; tremGain: GainNode;
+  constructor() {
+    const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const c = (this.ctx = new AC());
+    this.master = c.createGain(); this.master.gain.value = 0; this.master.connect(c.destination);
+    // looping brown noise = turbine roar
+    const len = c.sampleRate * 2, buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+    const noise = c.createBufferSource(); noise.buffer = buf; noise.loop = true;
+    this.noiseF = c.createBiquadFilter(); this.noiseF.type = 'lowpass'; this.noiseF.frequency.value = 500;
+    noise.connect(this.noiseF).connect(this.master); noise.start();
+    // low drone, chopped into a prop "thrum" for propeller aircraft
+    this.osc = c.createOscillator(); this.osc.type = 'sawtooth'; this.osc.frequency.value = 60;
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 280;
+    this.oscGain = c.createGain(); this.oscGain.gain.value = 0.16;
+    this.osc.connect(lp).connect(this.oscGain).connect(this.master); this.osc.start();
+    this.trem = c.createOscillator(); this.trem.frequency.value = 0;
+    this.tremGain = c.createGain(); this.tremGain.gain.value = 0;
+    this.trem.connect(this.tremGain).connect(this.oscGain.gain); this.trem.start();
+  }
+  set(on: boolean, ab: number, kind: EngineKind) {
+    const t = this.ctx.currentTime;
+    this.master.gain.setTargetAtTime(on ? 0.05 + 0.07 * ab : 0, t, 0.25);
+    this.noiseF.frequency.setTargetAtTime(kind === 'rocket' ? 1500 + 1500 * ab : kind === 'prop' ? 450 : 500 + 1600 * ab, t, 0.3);
+    this.osc.frequency.setTargetAtTime(kind === 'prop' ? 38 : 55 + 25 * ab, t, 0.3);
+    this.trem.frequency.setTargetAtTime(kind === 'prop' ? 19 : 0, t, 0.3);
+    this.tremGain.gain.setTargetAtTime(kind === 'prop' ? 0.13 : 0, t, 0.3);
+  }
+}
 
 /* ---------- flight: gentle drift plus an occasional maneuver ---------- */
 const smooth = (x: number) => x * x * (3 - 2 * x);
@@ -219,13 +360,22 @@ export function mountAircraft(wrap: HTMLElement) {
   const hud = $('.hud'), titleOut = $('[data-name]'), labelOut = $('[data-label]'), valueOut = $('[data-value]');
   const hdgOut = $('[data-hdg]'), bnkOut = $('[data-bnk]'), thrOut = $('[data-thr]'), machOut = $('[data-mach]');
   const horizon = wrap.querySelector<SVGGElement>('[data-horizon]');
-  const pips = [...wrap.querySelectorAll<HTMLElement>('[data-pip]')];
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const N = MODELS.length;
+  const hangar = wrap.dataset.hangar === 'true'; // hangar page: no auto-cycling, pick from a list
+  const pipBox = wrap.querySelector<HTMLElement>('[data-pips]');
+  if (pipBox) pipBox.innerHTML = MODELS.map(() => '<i data-pip></i>').join('');
+  const pips = [...wrap.querySelectorAll<HTMLElement>('[data-pip]')];
+  const specBox = wrap.dataset.specs ? document.querySelector<HTMLElement>(wrap.dataset.specs) : null;
+  const listBox = wrap.dataset.list ? document.querySelector<HTMLElement>(wrap.dataset.list) : null;
+  const soundBtn = wrap.querySelector<HTMLButtonElement>('[data-sound]');
+  let sound: EngineSound | null = null, soundOn = false;
+  // hangar deep link: /hangar/?aircraft=f-14-tomcat
+  const wanted = hangar ? MODELS.findIndex((m) => slugOf(m) === new URLSearchParams(location.search).get('aircraft')) : -1;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let size = 0, dpr = 1, visible = true, raf = 0, lastT = 0, textAt = 0;
   let color = '#cfb991', dark = true;
-  let current = 0, since = -1, skip = false, intro = !reduced, shownName = '', hudModel = MODELS[0];
+  let current = Math.max(0, wanted), prevIdx = N - 1, target: number | null = null, since = -1, skip = false, intro = !reduced, shownName = '', hudModel = MODELS[0];
   // pointer drag: spin with momentum, tilt the camera; a short tap switches aircraft
   let dragYaw = 0, yawVel = 0, elevOff = 0, dragging = false, moved = 0, lastX = 0, lastY = 0, lastMoveT = 0;
 
@@ -361,7 +511,7 @@ export function mountAircraft(wrap: HTMLElement) {
       const hoop = new Path2D();
       for (let i = 0; i <= 48; i++) {
         const t = (i / 48) * Math.PI * 2;
-        const [px, py] = project([x, 1.05 * Math.cos(t), 0.32 * Math.sin(t)]);
+        const [px, py] = project([x, 0.8 * Math.cos(t), 0.26 * Math.sin(t)]);
         i ? hoop.lineTo(px, py) : hoop.moveTo(px, py);
       }
       ctx.save();
@@ -436,11 +586,13 @@ export function mountAircraft(wrap: HTMLElement) {
 
     if (since < 0) since = reduced ? time - FADE * 1000 : time;
     let m = MODELS[current];
-    if (!reduced && (skip || (time - since) / 1000 > m.dwell)) {
-      skip = false; intro = false; current = (current + 1) % N; since = time; m = MODELS[current];
+    if (target === current) target = null;
+    if (!reduced && (skip || target !== null || (!hangar && (time - since) / 1000 > m.dwell))) {
+      prevIdx = current; current = target ?? (current + 1) % N; target = null;
+      skip = false; intro = false; since = time; m = MODELS[current];
     }
     const beam = reduced ? 1 : clamp01((time - since) / 1000 / FADE);
-    const prev = MODELS[(current - 1 + N) % N];
+    const prev = MODELS[prevIdx];
     const att = reduced ? LEVEL : attitude(time, m.fighter);
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -467,6 +619,7 @@ export function mountAircraft(wrap: HTMLElement) {
         thrOut.textContent = hot ? (hudModel.burner ? 'MAX A/B' : 'MAX') : 'MIL';
         thrOut.toggleAttribute('data-hot', hot && hudModel.burner);
       }
+      if (sound) sound.set(soundOn && visible && !document.hidden, att.ab, engineOf(m));
       if (machOut) machOut.textContent = `M${(hudModel.mach + att.ab * (hudModel.burner ? 0.3 : 0.08) + 0.006 * Math.sin(time * 0.0021)).toFixed(2)}`;
     }
   }
@@ -480,6 +633,9 @@ export function mountAircraft(wrap: HTMLElement) {
       if (titleOut) titleOut.textContent = m.name;
       if (labelOut) labelOut.textContent = m.label;
       pips.forEach((p, i) => p.toggleAttribute('data-on', i === current));
+      if (specBox) specBox.innerHTML = `<h2>${m.name}</h2><dl>${m.specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
+      listBox?.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === current)));
+      if (hangar && !first) { const u = new URL(location.href); u.searchParams.set('aircraft', slugOf(m)); history.replaceState(null, '', u); }
       hud?.classList.remove('swap');
     };
     if (first || reduced) return apply();
@@ -487,8 +643,29 @@ export function mountAircraft(wrap: HTMLElement) {
     setTimeout(apply, 280);
   }
 
+  const goto = (i: number) => {
+    i = ((i % N) + N) % N;
+    if (reduced) { prevIdx = current; current = i; redraw(); } else target = i;
+  };
+  if (listBox) {
+    listBox.innerHTML = MODELS.map((m, i) => `<button type="button" aria-pressed="${i === current}">${m.name}</button>`).join('');
+    listBox.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => goto(i)));
+  }
+  if (hangar) addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') goto(current + 1);
+    if (e.key === 'ArrowLeft') goto(current - 1);
+  });
+  soundBtn?.addEventListener('pointerdown', (e) => e.stopPropagation());
+  soundBtn?.addEventListener('click', () => {
+    soundOn = !soundOn;
+    if (soundOn && !sound) { try { sound = new EngineSound(); } catch { soundOn = false; } }
+    if (sound && soundOn) void sound.ctx.resume();
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    if (reduced) sound?.set(soundOn, 0, engineOf(MODELS[current]));
+  });
+
   const loop = (t: number) => {
-    if (!visible || document.hidden) { raf = 0; return; }
+    if (!visible || document.hidden) { raf = 0; sound?.set(false, 0, 'jet'); return; }
     draw(t);
     raf = requestAnimationFrame(loop);
   };
@@ -520,7 +697,7 @@ export function mountAircraft(wrap: HTMLElement) {
     if (performance.now() - lastMoveT > 90) yawVel = 0; // held still before letting go: no fling
     if (moved < 6) { // a tap, not a drag
       yawVel = 0;
-      if (reduced) { current = (current + 1) % N; redraw(); } else skip = true;
+      goto(current + 1);
     }
   };
   wrap.addEventListener('pointerup', release);

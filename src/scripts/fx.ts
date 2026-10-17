@@ -107,3 +107,41 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
 
 /* ---------- Pause SVG (SMIL) animations for reduced motion ---------- */
 if (reduced) document.querySelectorAll<SVGSVGElement>('svg.hero-art').forEach((s) => s.pauseAnimations?.());
+
+/* ---------- Konami code (up up down down left right left right B A) opens the hidden hangar ---------- */
+const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let kIdx = 0;
+addEventListener('keydown', (e) => {
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  kIdx = k === KONAMI[kIdx] ? kIdx + 1 : k === KONAMI[0] ? 1 : 0;
+  if (kIdx === KONAMI.length) { kIdx = 0; location.href = `${root.dataset.base || ''}/hangar/`; }
+});
+
+/* ---------- Now and then: a formation flyby (aircraft motif) or a shooting star (space motif) across the hero ---------- */
+const heroEl = document.querySelector<HTMLElement>('.hero');
+if (heroEl && !reduced) {
+  // top view of a swept-wing jet, nose pointing right
+  const JET = '<path d="M28 10 21 8.6 14 8 9 1H6.5l3 7-6.3.3L1 5H0l.7 4.5L0 10l.7.5L0 15h1l2.2-3.3 6.3.3-3 7H9l5-7 7-.6z" fill="currentColor"/>';
+  const flyby = () => {
+    const el = document.createElement('div');
+    if (root.dataset.motif === 'aircraft') {
+      el.className = 'flyby';
+      const jet = (x: number, y: number) => `<g transform="translate(${x} ${y})"><path d="M-160 10H0" stroke="currentColor" stroke-opacity=".25"/>${JET}</g>`;
+      el.innerHTML = `<svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">${jet(70, 25)}${jet(45, 5)}${jet(45, 45)}</svg>`;
+      el.style.top = `${10 + Math.random() * 30}%`;
+      heroEl.appendChild(el);
+      const w = heroEl.clientWidth;
+      el.animate([{ transform: 'translate(-160px, 0)' }, { transform: `translate(${w + 160}px, -40px)` }],
+        { duration: 7000 + Math.random() * 2500, easing: 'linear' }).onfinish = () => el.remove();
+    } else {
+      el.className = 'shooting-star';
+      el.style.top = `${8 + Math.random() * 35}%`;
+      el.style.left = `${20 + Math.random() * 60}%`;
+      heroEl.appendChild(el);
+      el.animate([{ transform: 'rotate(-20deg) translateX(0)', opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: 'rotate(-20deg) translateX(-260px)', opacity: 0 }],
+        { duration: 1100, easing: 'ease-out' }).onfinish = () => el.remove();
+    }
+  };
+  const schedule = (ms: number) => setTimeout(() => { if (!document.hidden) flyby(); schedule(35000 + Math.random() * 25000); }, ms);
+  schedule(9000);
+}

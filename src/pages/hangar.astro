@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import AircraftArt from '../components/AircraftArt.astro';
+import Starfield from '../components/Starfield.astro';
+---
+<Base title="Hangar" description="A hidden hangar of rotating aircraft wireframes. Drag to rotate; pick an aircraft for its spec card.">
+  <section class="hero hangar">
+    <Starfield />
+    <div class="wrap">
+      <p class="eyebrow">Restricted area · you found the hangar</p>
+      <h1>Hangar</h1>
+      <p class="muted hangar-help">Drag to spin and tilt, tap to switch, or pick one below. <kbd>←</kbd> <kbd>→</kbd> also work. Turn on engine sound with the speaker.</p>
+      <div class="hangar-grid">
+        <AircraftArt hangar specs="#hangar-specs" list="#hangar-list" class="big" />
+        <aside class="hangar-side">
+          <div class="hangar-list" id="hangar-list" role="group" aria-label="Choose an aircraft"></div>
+          <div class="spec-card" id="hangar-specs" aria-live="polite"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>

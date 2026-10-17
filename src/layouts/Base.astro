@@ -1,9 +1,17 @@
 ---
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
 import '../styles/global.css';
+import barlow700 from '@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2?url';
+import inter400 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 import '../styles/fx.css';
-import { site, url, motif } from '../lib';
+import { site, url, motif, base, goatcounter } from '../lib';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 interface Props { title?: string; description?: string; image?: string; }
 const { title, description = site.tagline, image = site.ogImage || '/og.png' } = Astro.props;
 const full = title ? `${title} · ${site.name}` : `${site.name} · Portfolio`;
@@ -11,13 +19,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(url(image), Astro.site).href;
 ---
 <!doctype html>
-<html lang="en" data-motif={motif}>
+<html lang="en" data-motif={motif} data-base={base}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{full}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="preload" href={barlow700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={full} />
@@ -28,19 +38,18 @@ const ogImage = new URL(url(image), Astro.site).href;
     <link rel="alternate" type="application/rss+xml" title={`${site.name} · Projects`} href={url('/rss.xml')} />
     <meta name="theme-color" content="#000000" />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap" />
     <script is:inline>
       // Restore the saved light/dark choice before paint to avoid a flash.
       try { var m = localStorage.getItem('mode'); if (m === 'light' || m === 'dark') document.documentElement.dataset.mode = m; } catch (e) {}
     </script>
+    {goatcounter && <script is:inline async data-goatcounter={`https://${goatcounter}.goatcounter.com/count`} src="https://gc.zgo.at/count.js"></script>}
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <Header />
     <main id="main"><slot /></main>
     <Footer />
+    <CommandPalette />
     <script>
       import '../scripts/theme';
       import '../scripts/fx';

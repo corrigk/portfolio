@@ -1,0 +1,28 @@
+---
+// Ctrl/Cmd+K (or "/") command palette: jump to any page or project, or run a quick action.
+import { getCollection } from 'astro:content';
+import { site, url } from '../lib';
+const projects = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const pages: [string, string][] = [['Home', '/'], ['Projects', '/projects/'], ['Timeline', '/timeline/'], ['About', '/about/'], ['Contact', '/contact/'], ['Hangar', '/hangar/']];
+const items = [
+  ...pages.map(([t, h]) => ({ t, hint: 'Page', href: url(h) })),
+  ...projects.map((p) => ({ t: p.data.title, hint: p.data.category, href: url(`/projects/${p.id}/`), k: p.data.tags.join(' ') })),
+  { t: 'Toggle light / dark', hint: 'Action', act: 'mode' },
+  ...(site.email ? [{ t: 'Copy email address', hint: 'Action', act: 'email', v: site.email }] : []),
+  ...(site.github ? [{ t: 'GitHub', hint: 'Link', href: site.github, ext: true }] : []),
+  ...(site.linkedin ? [{ t: 'LinkedIn', hint: 'Link', href: site.linkedin, ext: true }] : []),
+  ...(site.resume ? [{ t: 'Download résumé', hint: 'Action', href: url(site.resume), ext: true }] : []),
+  { t: 'RSS feed', hint: 'Link', href: url('/rss.xml') },
+];
+---
+<dialog class="palette" id="palette" aria-label="Command palette">
+  <div class="palette-box">
+    <input id="palette-q" type="text" placeholder="Search pages, projects, actions…" autocomplete="off" spellcheck="false" aria-controls="palette-list" />
+    <ul id="palette-list" role="listbox" aria-label="Results"></ul>
+    <p class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></p>
+  </div>
+</dialog>
+<script type="application/json" id="palette-data" set:html={JSON.stringify(items)} />
+<script>
+  import '../scripts/palette';
+</script>

@@ -1,14 +1,15 @@
 ---
 // Rotating aircraft wireframes with a small HUD. Drawing code: src/scripts/aircraft.ts
-// Drag to spin/tilt, tap or click to switch aircraft.
-const names = ['B-1B Lancer', 'A-10 Thunderbolt II', 'B-2 Spirit', 'F-22 Raptor', 'SR-71 Blackbird'];
+// Drag to spin/tilt, tap or click to switch aircraft. Pass hangar to use it on the full-page hangar.
+interface Props { hangar?: boolean; specs?: string; list?: string; class?: string }
+const { hangar = false, specs, list, class: cls = '' } = Astro.props;
 ---
-<div class="hero-art aircraft-art" aria-hidden="true">
-  <canvas></canvas>
-  <span class="hud-hint">Drag to rotate · Tap to switch</span>
-  <svg class="adi" viewBox="-24 -24 48 48">
-    <defs><clipPath id="adi-clip"><circle r="21" /></clipPath></defs>
-    <g clip-path="url(#adi-clip)">
+<div class:list={['hero-art', 'aircraft-art', cls]} data-hangar={hangar ? 'true' : undefined} data-specs={specs} data-list={list}>
+  <canvas role="img" aria-label="Rotating wireframe drawings of military aircraft. Drag to rotate, tap to switch."></canvas>
+  <span class="hud-hint" aria-hidden="true">Drag to rotate · Tap to switch</span>
+  <svg class="adi" viewBox="-24 -24 48 48" aria-hidden="true">
+    <defs><clipPath id={hangar ? 'adi-clip-h' : 'adi-clip'}><circle r="21" /></clipPath></defs>
+    <g clip-path={hangar ? 'url(#adi-clip-h)' : 'url(#adi-clip)'}>
       <g data-horizon>
         <rect class="adi-ground" x="-80" y="0" width="160" height="80" />
         <path class="adi-line" d="M-80 0H80" />
@@ -18,13 +19,20 @@ const names = ['B-1B Lancer', 'A-10 Thunderbolt II', 'B-2 Spirit', 'F-22 Raptor'
     <circle class="adi-ring" r="21" />
     <path class="adi-plane" d="M-13 0h7l2.5 3.5L9 0h4M0 -1.2v2.4" transform="translate(-2 0)" />
   </svg>
-  <div class="hud">
-    <span class="hud-title" data-name>{names[0]}</span>
+  <div class="hud" aria-hidden="true">
+    <span class="hud-title" data-name>B-1B Lancer</span>
     <span><span data-label>Wing sweep</span> <b data-value>25.0°</b></span>
     <span>HDG <b data-hdg>035</b> · BNK <b data-bnk>0°</b></span>
     <span>THR <b data-thr>MIL</b> · <b data-mach>M0.85</b></span>
-    <span class="pips">{names.map((_, i) => <i data-pip data-on={i === 0 ? '' : undefined}></i>)}</span>
+    <span class="pips" data-pips></span>
   </div>
+  <button type="button" class="hud-sound" data-sound aria-pressed="false" aria-label="Engine sound" title="Engine sound">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none" />
+      <path class="snd-on" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" />
+      <path class="snd-off" d="M16 9l5 6M21 9l-5 6" />
+    </svg>
+  </button>
   <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
 </div>
 <script>

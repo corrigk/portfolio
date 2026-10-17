@@ -191,3 +191,70 @@ section h2.tl-year-label::before { display: none; }
 .adi-ring { fill: none; stroke: var(--accent); stroke-width: 1; opacity: .6; }
 .adi-plane { fill: none; stroke: #daaa00; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .model-viewer { display: block; width: 100%; height: 440px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); --poster-color: transparent; }
+
+.hud-sound { position: absolute; right: 4%; bottom: 5%; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-strong); background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--muted); cursor: pointer; transition: color .2s, border-color .2s; }
+.hud-sound:hover, .hud-sound[aria-pressed='true'] { color: var(--accent); border-color: var(--gold); }
+.hud-sound .snd-on { display: none; }
+.hud-sound[aria-pressed='true'] .snd-on { display: inline; }
+.hud-sound[aria-pressed='true'] .snd-off { display: none; }
+
+/* ---------- Hangar page ---------- */
+.hangar { padding-top: clamp(2rem, 6vw, 4rem); }
+.hangar-help kbd { font: 600 .75rem var(--font-body); border: 1px solid var(--line-strong); border-radius: 4px; padding: .05rem .35rem; }
+.hangar-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 2rem; align-items: start; margin-top: 1.5rem; }
+.aircraft-art.big { max-width: 680px; justify-self: center; position: relative; right: auto; top: auto; opacity: 1; margin: 0; }
+.hangar-list { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1.25rem; }
+.hangar-list button { font: inherit; font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .4rem .8rem; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); cursor: pointer; }
+.hangar-list button:hover { border-color: var(--gold); }
+.hangar-list button[aria-pressed='true'] { background: var(--gold); border-color: var(--gold); color: #0b0b0b; }
+.spec-card { background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--gold); border-radius: var(--radius); padding: 1.25rem 1.4rem; }
+.spec-card h2 { font-size: 1.6rem; margin: 0 0 .75rem; }
+section .spec-card h2::before { display: none; }
+.spec-card dl { margin: 0; display: grid; gap: 0; }
+.spec-card dl div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; padding: .5rem 0; border-bottom: 1px dashed var(--line-strong); }
+.spec-card dl div:last-child { border-bottom: 0; }
+.spec-card dt { font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-top: .15rem; }
+.spec-card dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) { .hangar-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Formation flyby / shooting star ---------- */
+.flyby { position: absolute; left: 0; z-index: 0; pointer-events: none; color: var(--accent); opacity: .55; }
+.flyby svg { display: block; overflow: visible; }
+.shooting-star { position: absolute; z-index: 0; width: 140px; height: 1.5px; pointer-events: none; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 85%, transparent)); border-radius: 2px; }
+
+/* ---------- Mission patch + blueprint dimension line ---------- */
+.detail-head { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; }
+.patch { flex: none; filter: drop-shadow(0 6px 14px rgb(0 0 0 / .25)); }
+@media (prefers-reduced-motion: no-preference) { .patch { animation: patch-in .9s cubic-bezier(.2, .9, .3, 1.2) .2s both; } @keyframes patch-in { from { transform: rotate(-25deg) scale(.6); opacity: 0; } } }
+.patch-edge { fill: none; stroke: var(--gold); stroke-width: 2; stroke-dasharray: 3 2.2; }
+.patch-fill { fill: #0b0b0d; stroke: var(--gold); stroke-width: 1.5; }
+.patch-inner { fill: #141418; stroke: var(--gold); stroke-width: 1; }
+.patch-text { fill: #cfb991; font: 700 9.5px var(--font-display); letter-spacing: .14em; }
+.patch-text.small { font: 600 7px var(--font-body); letter-spacing: .18em; fill: #a19c91; }
+.patch-icon { fill: none; stroke: #daaa00; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.patch-stars { fill: #daaa00; }
+@media (max-width: 640px) { .detail-head { align-items: flex-start; } .patch { width: 84px; height: 84px; } }
+.dim { display: flex; align-items: center; gap: .75rem; margin-top: 1.5rem; color: var(--muted); font-size: .62rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+.dim i { flex: 1; height: 1px; background: var(--line-strong); position: relative; }
+.dim i:first-child::before, .dim i:last-child::after { content: ''; position: absolute; top: -4px; border: 4.5px solid transparent; }
+.dim i:first-child::before { left: 0; border-right-color: var(--line-strong); border-left-width: 0; }
+.dim i:last-child::after { right: 0; border-left-color: var(--line-strong); border-right-width: 0; }
+.dim::before, .dim::after { content: ''; width: 1px; height: 12px; background: var(--line-strong); }
+.dim + .detail-cover { margin-top: .6rem; }
+
+/* ---------- Command palette ---------- */
+.palette-btn { display: inline-flex; align-items: center; gap: .45rem; width: auto; padding: 0 .65rem; }
+.palette-btn kbd { font: 600 .62rem var(--font-body); letter-spacing: .06em; color: #a19c91; }
+@media (max-width: 640px) { .palette-btn kbd { display: none; } }
+dialog.palette { width: min(620px, calc(100vw - 2rem)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--gold); border-radius: 14px; background: var(--surface); color: var(--text); box-shadow: 0 30px 80px rgb(0 0 0 / .5); }
+dialog.palette::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(3px); }
+.palette-box input { width: 100%; font: 500 1.05rem var(--font-body); padding: 1rem 1.2rem; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--text); outline: none; }
+.palette-box ul { list-style: none; margin: 0; padding: .4rem; max-height: min(60vh, 420px); overflow: auto; }
+.palette-box li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .6rem .8rem; border-radius: 8px; cursor: pointer; }
+.palette-box li small { font-size: .66rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.palette-box li[aria-selected='true'] { background: color-mix(in srgb, var(--gold) 22%, transparent); }
+.palette-box li[aria-selected='true'] small { color: var(--accent); }
+.palette-empty { color: var(--muted); cursor: default !important; }
+.palette-foot { display: flex; gap: 1.2rem; margin: 0; padding: .6rem 1.1rem; border-top: 1px solid var(--line); font-size: .7rem; color: var(--muted); }
+.palette-foot kbd { font: 600 .66rem var(--font-body); border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 .3rem; margin-right: .2rem; }
+.dim span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 72%; }

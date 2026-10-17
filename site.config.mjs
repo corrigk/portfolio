@@ -9,6 +9,9 @@ export default {
   motif: 'aircraft',
   // Show every project on the Timeline page automatically (in addition to timeline entries).
   timelineIncludesProjects: true,
+  // Privacy-friendly visit counts (no cookies). Create a free account at https://www.goatcounter.com,
+  // then put your code here, e.g. 'corrigk' for https://corrigk.goatcounter.com. Empty = no analytics.
+  goatcounter: process.env.GOATCOUNTER || '',
   // Order of category filters and home-page stats.
   categoryOrder: ['software', 'hardware', 'fun'],
 };

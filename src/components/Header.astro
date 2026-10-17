@@ -11,6 +11,10 @@ const isActive = (h: string) => path.startsWith(url(h));
       {links.map(([l, h]) => <a href={url(h)} aria-current={isActive(h) ? 'page' : undefined}>{l}</a>)}
     </nav>
     <div class="controls">
+      <button type="button" class="icon-btn palette-btn" data-palette aria-label="Search (Ctrl+K)" title="Search (Ctrl+K or /)">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <kbd>Ctrl K</kbd>
+      </button>
       <button type="button" id="mode-toggle" class="icon-btn" aria-label="Toggle light/dark mode" title="Light / dark / auto">
         <span aria-hidden="true" id="mode-icon">◐</span>
       </button>

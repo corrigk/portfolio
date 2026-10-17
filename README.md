@@ -118,6 +118,14 @@ All optional polish lives in `src/scripts/fx.ts` and `src/styles/fx.css`; every 
 - **Spec sheet** table on project pages (`specSheet` field).
 - **Résumé button** (upload a PDF in Site Settings), a copy-email button on Contact, an RSS feed at `/rss.xml`, an auto-generated share image at `/og.png`, and a "Lost in space" 404 page.
 
+- **Hangar:** a hidden page at `/hangar/` (type the Konami code ↑↑↓↓←→←→BA anywhere, or find it in the command palette) with nine aircraft (B-1B, F-14, A-10, P-51, B-2, C-130, F-22, X-15, SR-71), spec cards, engine sound (off by default) and deep links like `/hangar/?aircraft=sr-71-blackbird`. Add aircraft in `src/scripts/aircraft.ts` (`MODELS`).
+- **Command palette:** Ctrl/⌘+K or `/` searches every page and project and has quick actions (toggle dark mode, copy email).
+- **Mission patches:** each project page gets a generated patch (title, category, year) and a blueprint dimension line over the cover.
+- **Flyby:** every 35–60 s a jet formation (aircraft motif) or a shooting star (space motif) crosses the hero.
+- **3D models:** add `model: /uploads/<slug>/model.glb` to a project (or use the CMS field) to show an interactive `<model-viewer>`.
+- **Analytics (optional):** set `goatcounter` in `site.config.mjs` after creating a free GoatCounter account; no cookies, no banner needed.
+- **Fonts** are self-hosted (Inter + Barlow Condensed via Fontsource), so there are no third-party requests on page load.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml` and publishes to GitHub Pages. One-time: repo *Settings → Pages → Source: GitHub Actions*. CMS login needs a one-time extra setup: [SETUP-CMS.md](SETUP-CMS.md).

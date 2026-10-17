@@ -1,12 +1,15 @@
 ---
-// Rotating B-1B Lancer wireframe with a small HUD readout. Drawing code: src/scripts/aircraft.ts
+// Rotating aircraft wireframes (B-1B, A-10, B-2, F-22) with a small HUD readout.
+// Drawing code: src/scripts/aircraft.ts. Click/tap to switch aircraft.
+const names = ['B-1B Lancer', 'A-10 Thunderbolt II', 'B-2 Spirit', 'F-22 Raptor'];
 ---
-<div class="hero-art aircraft-art" aria-hidden="true">
+<div class="hero-art aircraft-art" aria-hidden="true" title="Click for the next aircraft">
   <canvas></canvas>
   <div class="hud">
-    <span class="hud-title">B-1B Lancer</span>
-    <span>Wing sweep <b data-sweep>25.0°</b></span>
+    <span class="hud-title" data-name>{names[0]}</span>
+    <span><span data-label>Wing sweep</span> <b data-value>25.0°</b></span>
     <span>HDG <b data-hdg>035</b></span>
+    <span class="pips">{names.map((_, i) => <i data-pip data-on={i === 0 ? '' : undefined}></i>)}</span>
   </div>
   <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
 </div>

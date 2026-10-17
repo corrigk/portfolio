@@ -172,3 +172,9 @@ section h2.tl-year-label::before { display: none; }
 .recent-log { list-style: none; padding: 0; margin: 0 0 .75rem; display: grid; gap: .55rem; }
 .recent-log li { display: grid; grid-template-columns: 4.5rem 1fr; gap: .75rem; align-items: baseline; }
 .recent-log .when { font-size: .75rem; font-weight: 600; letter-spacing: .08em; color: var(--accent); font-variant-numeric: tabular-nums; }
+.aircraft-art { cursor: pointer; }
+.hud { transition: opacity .28s ease, transform .28s ease; }
+.hud.swap { opacity: 0; transform: translateY(4px); }
+.pips { display: flex; gap: 5px; margin-top: .35rem; }
+.pips i { width: 14px; height: 2px; background: var(--line-strong); transition: background .3s, width .3s; }
+.pips i[data-on] { background: var(--accent); width: 22px; }

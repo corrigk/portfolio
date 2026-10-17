@@ -1,5 +1,6 @@
 // Rotating aircraft wireframes drawn on a <canvas> with no libraries.
 // The view keeps turning while the aircraft crossfade in turn: B-1B (with sweeping wings), A-10, B-2, F-22.
+// Every few seconds the aircraft banks, wiggles in yaw, pulls up on afterburner, or (fighters) does an aileron roll.
 // Click the art to skip to the next one.
 type V = [number, number, number]; // x: nose(+)/tail(-), y: right wing(+), z: up(+)
 type Seg = [V, V];
@@ -9,6 +10,8 @@ const rad = (d: number) => (d * Math.PI) / 180;
 /* ---------- geometry helpers ---------- */
 class Shape {
   s: Seg[] = [];
+  k = 1;                         // scale applied by normalize()
+  tf = (p: V): V => p;           // point transform applied by normalize()
   poly(p: V[], close = true) {
     for (let i = 0; i < p.length - (close ? 0 : 1); i++) this.s.push([p[i], p[(i + 1) % p.length]]);
     return this;
@@ -41,7 +44,9 @@ class Shape {
     const [x0, x1] = ext(0), [y0, y1] = ext(1), [z0, z1] = ext(2);
     const k = size / Math.max(x1 - x0, y1 - y0);
     const c: V = [(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2];
-    this.s = this.s.map(([a, b]) => [a, b].map((p) => [(p[0] - c[0]) * k, (p[1] - c[1]) * k, (p[2] - c[2]) * k] as V) as Seg);
+    this.k = k;
+    this.tf = (p: V): V => [(p[0] - c[0]) * k, (p[1] - c[1]) * k, (p[2] - c[2]) * k];
+    this.s = this.s.map(([a, b]) => [this.tf(a), this.tf(b)] as Seg);
     return this;
   }
 }
@@ -132,15 +137,53 @@ const f22 = new Shape()
   .normalize();
 
 /* ---------- aircraft list ---------- */
-interface Model { name: string; label: string; value: (t: number) => string; segs: (t: number) => Seg[]; dwell: number; scale: number; elev?: number }
+interface Exhaust { p: V; r: number }
+interface Model {
+  name: string; label: string; value: (t: number) => string; segs: (t: number) => Seg[]; dwell: number; scale: number; elev?: number;
+  exhausts: Exhaust[];   // nozzle centres (model units) for the engine glow
+  burner: boolean;       // has an afterburner (bright flame); otherwise just a faint heat glow
+  fighter?: boolean;     // agile enough for full aileron rolls
+}
+/** Nozzles given for the right side (y > 0) are mirrored; `sh` maps raw units onto a normalized model. */
+const nozzles = (pts: V[], r: number, sh?: Shape): Exhaust[] =>
+  pts.flatMap(([x, y, z]) => [[x, y, z], [x, -y, z]] as V[]).map((p) => ({ p: sh ? sh.tf(p) : p, r: sh ? r * sh.k : r }));
 const sweepAt = (t: number) => 41.25 - 26.25 * Math.cos((t / 1000) * ((Math.PI * 2) / 14));
 const MODELS: Model[] = [
-  { name: 'B-1B Lancer', label: 'Wing sweep', value: (t) => `${sweepAt(t).toFixed(1)}°`, segs: (t) => b1Body.s.concat(b1Wings(sweepAt(t))), dwell: 16, scale: 1 },
-  { name: 'A-10 Thunderbolt II', label: 'Role', value: () => 'Close air support', segs: () => a10.s, dwell: 12, scale: 0.98 },
-  { name: 'B-2 Spirit', label: 'Wingspan', value: () => '172 ft', segs: () => b2.s, dwell: 12, scale: 1.05, elev: 40 },
-  { name: 'F-22 Raptor', label: 'Top speed', value: () => 'Mach 2+', segs: () => f22.s, dwell: 12, scale: 0.98 },
+  { name: 'B-1B Lancer', label: 'Wing sweep', value: (t) => `${sweepAt(t).toFixed(1)}°`, segs: (t) => b1Body.s.concat(b1Wings(sweepAt(t))), dwell: 16, scale: 1,
+    exhausts: nozzles([[-0.47, 0.137, -0.085], [-0.47, 0.183, -0.085]], 0.02), burner: true },
+  { name: 'A-10 Thunderbolt II', label: 'Role', value: () => 'Close air support', segs: () => a10.s, dwell: 12, scale: 0.98,
+    exhausts: nozzles([[-16.7, 5.2, 4.6]], 1.6, a10), burner: false, fighter: true },
+  { name: 'B-2 Spirit', label: 'Wingspan', value: () => '172 ft', segs: () => b2.s, dwell: 12, scale: 1.05, elev: 40,
+    exhausts: nozzles([[-16.5, 17, 1]], 2, b2), burner: false },
+  { name: 'F-22 Raptor', label: 'Top speed', value: () => 'Mach 2+', segs: () => f22.s, dwell: 12, scale: 0.98,
+    exhausts: nozzles([[-30.2, 2.5, 0]], 1.1, f22), burner: true, fighter: true },
 ];
 const FADE = 1.6; // seconds of crossfade between aircraft
+
+/* ---------- flight: gentle drift plus an occasional maneuver ---------- */
+const smooth = (x: number) => x * x * (3 - 2 * x);
+const hash = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+interface Attitude { roll: number; pitch: number; yawOff: number; ab: number }
+/** Every 6.5 s one of: bank, yaw wiggle, afterburner pull-up, or (fighters) a full aileron roll. */
+function attitude(time: number, fighter = false): Attitude {
+  const P = 6.5, D = 2.8, s = time / 1000;
+  let roll = rad(4) * Math.sin(s * 0.9), pitch = rad(1.8) * Math.sin(s * 0.6 + 1), yawOff = rad(2) * Math.sin(s * 0.45 + 2), ab = 0;
+  const idx = Math.floor(s / P), u = (s - idx * P - 1.5) / D;
+  if (u > 0 && u < 1) {
+    const env = Math.sin(Math.PI * u), dir = hash(idx + 7) > 0.5 ? 1 : -1;
+    const kind = Math.floor(hash(idx) * 4);
+    if (kind === 0) roll += dir * rad(32) * env;                                   // bank
+    else if (kind === 1) yawOff += dir * rad(10) * Math.sin(2 * Math.PI * u);       // yaw wiggle
+    else if (kind === 2) { pitch += rad(12) * env; ab = env; }                      // pull up on afterburner
+    else if (fighter) { roll += dir * 2 * Math.PI * smooth(u); ab = env; }          // full aileron roll
+    else { roll += dir * rad(22) * env; ab = env * 0.8; }                           // bombers: burner + bank
+  }
+  return { roll, pitch, yawOff, ab };
+}
+const isDark = () => {
+  const m = document.documentElement.dataset.mode;
+  return m ? m === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+};
 
 /* ---------- renderer ---------- */
 export function mountAircraft(wrap: HTMLElement) {
@@ -151,6 +194,8 @@ export function mountAircraft(wrap: HTMLElement) {
   const labelOut = wrap.querySelector<HTMLElement>('[data-label]');
   const valueOut = wrap.querySelector<HTMLElement>('[data-value]');
   const hdgOut = wrap.querySelector<HTMLElement>('[data-hdg]');
+  const bnkOut = wrap.querySelector<HTMLElement>('[data-bnk]');
+  const thrOut = wrap.querySelector<HTMLElement>('[data-thr]');
   const pips = [...wrap.querySelectorAll<HTMLElement>('[data-pip]')];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let size = 0, dpr = 1, visible = true, last = 0, textAt = 0;
@@ -164,14 +209,21 @@ export function mountAircraft(wrap: HTMLElement) {
     canvas.style.width = canvas.style.height = `${size}px`;
   };
 
-  function drawModel(segs: Seg[], yaw: number, alpha: number, scale: number, color: string, elevDeg = 20) {
-    const ELEV = rad(elevDeg);
+  function drawModel(m: Model, segs: Seg[], yaw: number, alpha: number, scale: number, color: string, att: Attitude, time: number) {
+    const ELEV = rad(m.elev ?? 20);
+    yaw += att.yawOff;
+    const cr = Math.cos(att.roll), sr = Math.sin(att.roll), cp = Math.cos(att.pitch), sp = Math.sin(att.pitch);
+    const body = (p: V): V => { // roll about the fuselage axis, then pitch the nose up/down
+      const y = p[1] * cr - p[2] * sr, z1 = p[1] * sr + p[2] * cr;
+      return [p[0] * cp - z1 * sp, y, p[0] * sp + z1 * cp];
+    };
     const S = size * 0.5 * scale, cx = size / 2, cy = size * 0.46;
     const cyw = Math.cos(yaw), syw = Math.sin(yaw), ce = Math.cos(ELEV), se = Math.sin(ELEV);
     let zMin = Infinity;
     for (const [a, b] of segs) zMin = Math.min(zMin, a[2], b[2]);
     const shadowZ = zMin - 0.3;
-    const project = (p: V, zOverride?: number): [number, number, number] => {
+    const project = (raw: V, zOverride?: number): [number, number, number] => {
+      const p = body(raw);
       const z = zOverride ?? p[2];
       const x1 = p[0] * cyw - p[1] * syw, y1 = p[0] * syw + p[1] * cyw;
       const v = z * ce - x1 * se, d = x1 * ce + z * se;
@@ -195,6 +247,37 @@ export function mountAircraft(wrap: HTMLElement) {
       ctx.globalAlpha = alpha * Math.max(0.18, Math.min(1, 0.55 + ((pa[2] + pb[2]) / 2) * 0.55));
       ctx.beginPath(); ctx.moveTo(pa[0], pa[1]); ctx.lineTo(pb[0], pb[1]); ctx.stroke();
     }
+
+    // Engine glow: a flickering hot core, plus on afterburner a flame plume trailing behind each nozzle.
+    if (!m.exhausts.length) return;
+    const dark = isDark();
+    const flick = 0.82 + 0.18 * Math.sin(time * 0.031) * Math.sin(time * 0.017 + 1);
+    const heat = (m.burner ? 0.35 + 0.65 * att.ab : 0.2 + 0.25 * att.ab) * flick * alpha;
+    const len = m.burner ? 0.04 + 0.2 * att.ab : 0.03;
+    const steps = m.burner ? 2 + Math.round(6 * att.ab) : 1;
+    ctx.save();
+    ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over';
+    ctx.globalAlpha = 1;
+    for (const e of m.exhausts) {
+      for (let i = steps; i >= 0; i--) {
+        const f = i / steps; // 0 at the nozzle, 1 at the plume tip
+        const [px, py, d] = project([e.p[0] - f * len, e.p[1], e.p[2]]);
+        const r = e.r * S * (3.2 / (3.2 - d)) * (2.4 - 1.3 * f) * (1 + 0.5 * att.ab);
+        const a = heat * (1 - 0.75 * f) * (dark ? 1 : 0.7);
+        const g = ctx.createRadialGradient(px, py, 0, px, py, r);
+        if (dark) {
+          g.addColorStop(0, `rgba(255,244,214,${a})`);
+          g.addColorStop(0.35, `rgba(255,170,60,${a * 0.7})`);
+        } else {
+          g.addColorStop(0, `rgba(255,140,30,${a})`);
+          g.addColorStop(0.35, `rgba(230,90,20,${a * 0.6})`);
+        }
+        g.addColorStop(1, 'rgba(255,120,30,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    ctx.restore();
   }
 
   const ease = (x: number) => x * x * (3 - 2 * x);
@@ -211,15 +294,25 @@ export function mountAircraft(wrap: HTMLElement) {
     if (!reduced && (skip || age > m.dwell)) { skip = false; current = (current + 1) % MODELS.length; since = time; m = MODELS[current]; }
     const a = reduced ? 1 : Math.min(1, ((time - since) / 1000) / FADE);
     const prev = MODELS[(current - 1 + MODELS.length) % MODELS.length];
-    if (a < 1) drawModel(prev.segs(time), yaw, 1 - ease(a), prev.scale * (1 + 0.04 * ease(a)), color, prev.elev); // outgoing grows slightly as it fades
-    drawModel(m.segs(time), yaw, ease(a), m.scale * (0.94 + 0.06 * ease(a)), color, m.elev);                   // incoming settles in
+    const att: Attitude = reduced ? { roll: 0, pitch: 0, yawOff: 0, ab: 0 } : attitude(time, m.fighter);
+    if (a < 1) drawModel(prev, prev.segs(time), yaw, 1 - ease(a), prev.scale * (1 + 0.04 * ease(a)), color, att, time); // outgoing grows slightly as it fades
+    drawModel(m, m.segs(time), yaw, ease(a), m.scale * (0.94 + 0.06 * ease(a)), color, att, time);                     // incoming settles in
     ctx.globalAlpha = 1;
 
     if (m.name !== shownName) swapHud(m);
     if (time - textAt > 120 || reduced) {
       textAt = time;
       if (valueOut) valueOut.textContent = hudModel.value(time);
-      if (hdgOut) hdgOut.textContent = String(Math.round((((yaw * 180) / Math.PI) % 360 + 360) % 360)).padStart(3, '0');
+      if (hdgOut) hdgOut.textContent = String(Math.round(((((yaw + att.yawOff) * 180) / Math.PI) % 360 + 360) % 360)).padStart(3, '0');
+      if (bnkOut) {
+        const b = Math.round(((((att.roll * 180) / Math.PI) % 360) + 540) % 360 - 180);
+        bnkOut.textContent = `${b < 0 ? 'L' : b > 0 ? 'R' : ''}${Math.abs(b)}°`;
+      }
+      if (thrOut) {
+        const hot = att.ab > 0.35;
+        thrOut.textContent = hot ? (hudModel.burner ? 'MAX A/B' : 'MAX') : 'MIL';
+        thrOut.toggleAttribute('data-hot', hot && hudModel.burner);
+      }
     }
   }
 

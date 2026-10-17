@@ -8,7 +8,8 @@ const names = ['B-1B Lancer', 'A-10 Thunderbolt II', 'B-2 Spirit', 'F-22 Raptor'
   <div class="hud">
     <span class="hud-title" data-name>{names[0]}</span>
     <span><span data-label>Wing sweep</span> <b data-value>25.0°</b></span>
-    <span>HDG <b data-hdg>035</b></span>
+    <span>HDG <b data-hdg>035</b> · BNK <b data-bnk>0°</b></span>
+    <span>THR <b data-thr>MIL</b></span>
     <span class="pips">{names.map((_, i) => <i data-pip data-on={i === 0 ? '' : undefined}></i>)}</span>
   </div>
   <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>

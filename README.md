@@ -109,7 +109,7 @@ One theme: black and old gold (Purdue-inspired, not an official Purdue site) wit
 
 All optional polish lives in `src/scripts/fx.ts` and `src/styles/fx.css`; every animation is disabled for visitors with *reduce motion* turned on.
 
-- **Motif:** `motif` in `site.config.mjs` picks the decorations: `aircraft` (rotating wireframes that crossfade between a B-1B with sweeping wings, A-10, B-2 and F-22, with a live HUD; click the art to skip ahead; jet page transitions; code in `src/scripts/aircraft.ts`, where each aircraft is a short list of lines and new ones can be added to `MODELS`) or `space` (constellation, rockets).
+- **Motif:** `motif` in `site.config.mjs` picks the decorations: `aircraft` (rotating wireframes that crossfade between a B-1B with sweeping wings, A-10, B-2 and F-22, with a live HUD; every few seconds the aircraft banks, yaws, pulls up on afterburner or (fighters) does an aileron roll, with engine glow; click the art to skip ahead; jet page transitions; code in `src/scripts/aircraft.ts`, where each aircraft is a short list of lines and new ones can be added to `MODELS`) or `space` (constellation, rockets).
 - **Rocket/jet transition:** clicking an internal link sends a tiny rocket along the header's gold rule, then the page cross-fades (View Transitions).
 - **Hero:** twinkling starfield plus the Cygnus constellation (it looks like an aircraft) drawing itself in and slowly rotating, with a satellite on an orbit (`src/components/HeroArt.astro`).
 - **Telemetry strip** on the home page with live counts per category (`categoryOrder` in `site.config.mjs` sets the order).

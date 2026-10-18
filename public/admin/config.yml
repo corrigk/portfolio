@@ -109,6 +109,34 @@ collections:
   - name: settings
     label: Site Settings
     files:
+      - name: places
+        label: Places I've been
+        file: src/data/places.json
+        fields:
+          - label: Countries
+            name: countries
+            widget: list
+            summary: "{{fields.name}}"
+            hint: "Use the common English name (Germany, Italy, Aruba...). Put England, Scotland and Wales under United Kingdom as regions. The map ignores names it doesn't recognise, but it still lists them."
+            fields:
+              - { label: Country, name: name, widget: string }
+              - { label: "Regions (optional)", name: regions, widget: list, required: false, default: [] }
+          - label: US states
+            name: states
+            widget: select
+            multiple: true
+            options: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+          - label: Cities to pin on the map
+            name: cities
+            widget: list
+            required: false
+            summary: "{{fields.name}}, {{fields.country}}"
+            hint: "To get latitude and longitude: right-click the city in Google Maps and click the numbers at the top of the menu."
+            fields:
+              - { label: City, name: name, widget: string }
+              - { label: Country, name: country, widget: string }
+              - { label: Latitude, name: lat, widget: number, value_type: float, step: 0.0001 }
+              - { label: Longitude, name: lon, widget: number, value_type: float, step: 0.0001 }
       - name: site
         label: Site settings
         file: src/data/site.json

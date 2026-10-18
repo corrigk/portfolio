@@ -3,7 +3,7 @@
 import { getCollection } from 'astro:content';
 import { site, url } from '../lib';
 const projects = (await getCollection('projects')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const pages: [string, string][] = [['Home', '/'], ['Projects', '/projects/'], ['Timeline', '/timeline/'], ['About', '/about/'], ['Contact', '/contact/'], ['Hangar', '/hangar/']];
+const pages: [string, string][] = [['Home', '/'], ['Projects', '/projects/'], ['Timeline', '/timeline/'], ['Places', '/places/'], ['About', '/about/'], ['Contact', '/contact/'], ['Hangar', '/hangar/']];
 const items = [
   ...pages.map(([t, h]) => ({ t, hint: 'Page', href: url(h) })),
   ...projects.map((p) => ({ t: p.data.title, hint: p.data.category, href: url(`/projects/${p.id}/`), k: p.data.tags.join(' ') })),

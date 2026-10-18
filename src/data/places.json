@@ -1,0 +1,30 @@
+{
+  "countries": [
+    { "name": "Germany" },
+    { "name": "Austria" },
+    { "name": "Switzerland" },
+    { "name": "United Kingdom", "regions": ["England", "Scotland", "Wales"] },
+    { "name": "Ireland" },
+    { "name": "France" },
+    { "name": "Italy" },
+    { "name": "Netherlands" },
+    { "name": "Belgium" },
+    { "name": "Denmark" },
+    { "name": "Aruba" },
+    { "name": "Canada" },
+    { "name": "United States" }
+  ],
+  "states": [
+    "Hawaii", "Washington", "Oregon", "California", "Nevada", "Idaho", "Utah", "Arizona", "New Mexico", "Texas",
+    "Nebraska", "Iowa", "Illinois", "Indiana", "Minnesota", "Montana", "Wisconsin", "Michigan", "Maine", "New York",
+    "New Jersey", "Delaware", "Virginia", "District of Columbia", "Tennessee", "Kentucky", "Ohio", "Florida", "Alabama",
+    "Georgia", "Colorado", "Pennsylvania", "Kansas", "South Dakota", "Wyoming"
+  ],
+  "cities": [
+    { "name": "Vancouver", "country": "Canada", "lat": 49.2827, "lon": -123.1207 },
+    { "name": "Victoria", "country": "Canada", "lat": 48.4284, "lon": -123.3656 },
+    { "name": "Montreal", "country": "Canada", "lat": 45.5017, "lon": -73.5673 },
+    { "name": "Quebec City", "country": "Canada", "lat": 46.8139, "lon": -71.208 },
+    { "name": "Edinburgh", "country": "United Kingdom", "lat": 55.9533, "lon": -3.1883 }
+  ]
+}

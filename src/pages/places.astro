@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import { worldBase, worldVisited, worldOutline, graticule, cities, views, usStates, summary, dims } from '../places';
+
+const dc = summary.stateNames.includes('District of Columbia');
+const stateCount = summary.stateNames.length - (dc ? 1 : 0);
+const toVB = (v: number[]) => v.join(' ');
+const visitedUS = usStates.filter((s) => s.visited);
+---
+<Base title="Places" description={`${summary.countries} countries and ${stateCount} US states so far. A map of where I've been.`}>
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Flight plan · for fun</p>
+      <h1>Places I've been</h1>
+      <p class="muted" style="max-width:58ch">Countries, states and a few favorite cities, mapped. Switch views, hover to see names.</p>
+
+      <dl class="telemetry places-stats">
+        <div class="t-cell"><dt>Countries</dt><dd data-count={summary.countries}>{String(summary.countries).padStart(2, '0')}</dd></div>
+        <div class="t-cell"><dt>US states{dc ? ' + D.C.' : ''}</dt><dd data-count={stateCount}>{String(stateCount).padStart(2, '0')}</dd></div>
+        <div class="t-cell"><dt>Cities pinned</dt><dd data-count={summary.cities}>{String(summary.cities).padStart(2, '0')}</dd></div>
+      </dl>
+
+      <div class="filter-row map-tabs" role="group" aria-label="Map view">
+        <button type="button" class="chip" data-view="world" aria-pressed="true">World</button>
+        <button type="button" class="chip" data-view="europe" aria-pressed="false">Europe</button>
+        <button type="button" class="chip" data-view="canada" aria-pressed="false">Canada</button>
+        <button type="button" class="chip" data-view="usa" aria-pressed="false">USA</button>
+      </div>
+
+      <div class="map-frame" id="map-frame" data-views={JSON.stringify(views)}>
+        <svg id="map-world" class="map" viewBox={toVB(views.world)} role="img" aria-label={`World map with ${summary.countries} visited countries highlighted`}>
+          <path class="m-sphere" d={worldOutline} />
+          <path class="m-grid" d={graticule} />
+          <path class="m-land" d={worldBase} />
+          <g class="m-visited">
+            {worldVisited.map((c) => <path class="m-country" d={c.d} data-name={c.name === 'United States of America' ? 'United States' : c.name} />)}
+          </g>
+          <g class="m-small">
+            {worldVisited.filter((c) => c.small).map((c) => <circle class="m-dot" cx={c.cx} cy={c.cy} r="3" data-name={c.name} />)}
+          </g>
+          <g class="m-pins">
+            {cities.map((c) => (
+              <g class="pin" transform={`translate(${c.x} ${c.y})`} data-name={`${c.name}, ${c.country}`}>
+                <circle class="pin-pulse" r="4" />
+                <circle class="pin-dot" r="2.6" />
+              </g>
+            ))}
+          </g>
+        </svg>
+
+        <svg id="map-usa" class="map" viewBox="0 0 975 610" role="img" aria-label={`Map of the United States with ${stateCount} states${dc ? ' and Washington, D.C.' : ''} highlighted`} hidden>
+          <g>
+            {usStates.map((s) => <path class:list={['m-state', { on: s.visited }]} d={s.d} data-name={s.name} />)}
+          </g>
+        </svg>
+
+        <div class="map-tip" id="map-tip" role="status" aria-live="polite" hidden></div>
+      </div>
+
+      <div class="places-lists">
+        <div class="side-box">
+          <h2>Countries ({summary.countries})</h2>
+          <ul class="chips">
+            {summary.countryList.map((c) => (
+              <li class="pill">{c.name}{c.regions && c.regions.length ? <span class="muted"> · {c.regions.join(', ')}</span> : null}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="side-box">
+          <h2>US states{dc ? ' + D.C.' : ''} ({stateCount})</h2>
+          <ul class="chips">{visitedUS.map((s) => <li class="pill">{s.name === 'District of Columbia' ? 'D.C.' : s.name}</li>)}</ul>
+        </div>
+        {summary.cityList.length > 0 && (
+          <div class="side-box">
+            <h2>Cities</h2>
+            <ul class="chips">{summary.cityList.map((c) => <li class="pill">{c.name} <span class="muted">· {c.country}</span></li>)}</ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+  <script>
+    import '../scripts/places';
+  </script>
+</Base>

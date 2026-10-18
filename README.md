@@ -126,6 +126,10 @@ All optional polish lives in `src/scripts/fx.ts` and `src/styles/fx.css`; every 
 - **Analytics (optional):** set `goatcounter` in `site.config.mjs` after creating a free GoatCounter account; no cookies, no banner needed.
 - **Fonts** are self-hosted (Inter + Barlow Condensed via Fontsource), so there are no third-party requests on page load.
 
+## Places map
+
+The **Places** page (`/places/`) draws a world map (with Europe and Canada zoom views) and a US state map from `src/data/places.json`, editable in the CMS under *Site Settings → Places I've been*. Countries use their common English name (England, Scotland and Wales go under United Kingdom as regions), states are picked from a list, and each pinned city needs a latitude and longitude. A name the map doesn't recognise is still listed and prints a warning in the build log. The map is generated at build time with d3-geo and Natural Earth / US Census data and ships as plain SVG, so it adds no scripts beyond a few lines for the tabs.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml` and publishes to GitHub Pages. One-time: repo *Settings → Pages → Source: GitHub Actions*. CMS login needs a one-time extra setup: [SETUP-CMS.md](SETUP-CMS.md).

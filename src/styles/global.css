@@ -165,3 +165,4 @@ dialog.lightbox::backdrop { background: rgb(0 0 0 / .9); }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 640px) { nav { flex-wrap: wrap; gap: .25rem 1rem; } }

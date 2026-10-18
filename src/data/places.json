@@ -637,6 +637,36 @@
       "country": "United States",
       "lat": 40.7357,
       "lon": -74.1724
+    },
+    {
+      "name": "Arcadia, CA",
+      "country": "United States",
+      "lat": 34.1397,
+      "lon": -118.0353
+    },
+    {
+      "name": "Acadia National Park",
+      "country": "United States",
+      "lat": 44.3386,
+      "lon": -68.2733
+    },
+    {
+      "name": "Greenville, IN",
+      "country": "United States",
+      "lat": 38.3689,
+      "lon": -85.9718
+    },
+    {
+      "name": "Columbus",
+      "country": "United States",
+      "lat": 39.9612,
+      "lon": -82.9988
+    },
+    {
+      "name": "Dayton",
+      "country": "United States",
+      "lat": 39.7589,
+      "lon": -84.1916
     }
   ]
 }

@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { worldBase, worldVisited, worldOutline, graticule, cities, views, usStates, summary, dims } from '../places';
+import { worldBase, worldVisited, worldOutline, graticule, cities, usCities, views, usStates, summary } from '../places';
 
 const dc = summary.stateNames.includes('District of Columbia');
 const stateCount = summary.stateNames.length - (dc ? 1 : 0);
@@ -52,6 +52,14 @@ const visitedUS = usStates.filter((s) => s.visited);
           <g>
             {usStates.map((s) => <path class:list={['m-state', { on: s.visited }]} d={s.d} data-name={s.name} />)}
           </g>
+          <g class="us-pins">
+            {usCities.map((c) => (
+              <g class="us-pin" transform={`translate(${c.x} ${c.y})`} data-name={c.name}>
+                <circle class="us-hit" r="7" />
+                <circle class="us-dot" r="3" />
+              </g>
+            ))}
+          </g>
         </svg>
 
         <div class="map-tip" id="map-tip" role="status" aria-live="polite" hidden></div>
@@ -70,10 +78,15 @@ const visitedUS = usStates.filter((s) => s.visited);
           <h2>US states{dc ? ' + D.C.' : ''} ({stateCount})</h2>
           <ul class="chips">{visitedUS.map((s) => <li class="pill">{s.name === 'District of Columbia' ? 'D.C.' : s.name}</li>)}</ul>
         </div>
-        {summary.cityList.length > 0 && (
-          <div class="side-box">
-            <h2>Cities</h2>
-            <ul class="chips">{summary.cityList.map((c) => <li class="pill">{c.name} <span class="muted">· {c.country}</span></li>)}</ul>
+        {summary.cityGroups.length > 0 && (
+          <div class="side-box cities-box">
+            <h2>Cities ({summary.cities})</h2>
+            {summary.cityGroups.map(([country, names]) => (
+              <details open={names.length <= 12}>
+                <summary>{country} <span class="muted">({names.length})</span></summary>
+                <ul class="chips">{names.map((n) => <li class="pill">{n}</li>)}</ul>
+              </details>
+            ))}
           </div>
         )}
       </div>

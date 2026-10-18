@@ -1,5 +1,5 @@
 // Build-time map geometry for the Places page. Runs in Node during `astro build`; ships only plain SVG.
-import { geoNaturalEarth1, geoPath, geoCentroid } from 'd3-geo';
+import { geoNaturalEarth1, geoAlbersUsa, geoPath, geoCentroid } from 'd3-geo';
 import { feature } from 'topojson-client';
 import world110 from 'world-atlas/countries-110m.json';
 import world50 from 'world-atlas/countries-50m.json';
@@ -45,7 +45,10 @@ export const worldVisited = countries50
 export const worldOutline = pathStr({ type: 'Sphere' });
 export const graticule = pathStr({ type: 'MultiLineString', coordinates: [-60, -30, 0, 30, 60].map((lat) => Array.from({ length: 73 }, (_, i) => [-180 + i * 5, lat])).concat([-120, -60, 0, 60, 120].map((lon) => Array.from({ length: 37 }, (_, i) => [lon, -90 + i * 5]))) });
 
+const isUS = (c: { country: string }) => canon(c.country) === 'United States of America';
+/** Pins for the world/Europe/Canada views. US cities appear only on the USA map, where they are readable. */
 export const cities = data.cities
+  .filter((c) => !isUS(c))
   .map((c) => {
     const p = proj([c.lon, c.lat]);
     return p ? { name: c.name, country: c.country, x: p[0], y: p[1] } : null;
@@ -75,6 +78,15 @@ export const views: Record<string, number[]> = {
 const usPath = geoPath().digits(1);
 export const usStates = states.map((f) => ({ name: f.properties.name, d: usPath(f as any) ?? '', visited: visitedStates.has(f.properties.name) }));
 
+const usProj = geoAlbersUsa().scale(1300).translate([487.5, 305]);
+export const usCities = data.cities
+  .filter(isUS)
+  .map((c) => {
+    const p = usProj([c.lon, c.lat]);
+    return p ? { name: c.name, x: p[0], y: p[1] } : null;
+  })
+  .filter((c): c is { name: string; x: number; y: number } => !!c);
+
 /* ---------- summary ---------- */
 const continentOf: Record<string, string> = {
   Germany: 'Europe', Austria: 'Europe', Switzerland: 'Europe', 'United Kingdom': 'Europe', Ireland: 'Europe', France: 'Europe', Italy: 'Europe',
@@ -88,6 +100,7 @@ export const summary = {
   continents: new Set([...visitedCountries].map((c) => continentOf[c]).filter(Boolean)).size,
   countryList: data.countries,
   cityList: data.cities,
+  cityGroups: Object.entries(data.cities.reduce((g: Record<string, string[]>, c) => ((g[c.country] ||= []).push(c.name), g), {})),
   unmatched,
 };
 export const dims = { W, H };

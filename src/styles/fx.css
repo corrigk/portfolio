@@ -290,3 +290,12 @@ dialog.palette::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(3
 .places-lists .side-box { margin: 0; }
 .chips { list-style: none; margin: 0; padding: 0 !important; display: flex; flex-wrap: wrap; gap: .4rem; }
 .chips .pill { text-transform: none; letter-spacing: .02em; font-size: .78rem; }
+
+.us-dot { fill: #fff; stroke: #daaa00; stroke-width: 1.6; filter: drop-shadow(0 0 3px rgb(218 170 0 / .9)); }
+.us-hit { fill: transparent; }
+.us-pin { cursor: default; }
+.us-pin:hover .us-dot { r: 4.5; fill: #daaa00; }
+.cities-box { grid-column: 1 / -1; }
+.cities-box details { margin-top: .6rem; }
+.cities-box summary { cursor: pointer; font-weight: 600; font-size: .85rem; padding: .2rem 0; }
+.cities-box .chips { margin: .4rem 0 .6rem; }

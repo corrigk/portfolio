@@ -265,6 +265,378 @@
       "country": "Germany",
       "lat": 47.576,
       "lon": 10.735
+    },
+    {
+      "name": "Albuquerque",
+      "country": "United States",
+      "lat": 35.0844,
+      "lon": -106.6504
+    },
+    {
+      "name": "Hatch",
+      "country": "United States",
+      "lat": 32.6618,
+      "lon": -107.1517
+    },
+    {
+      "name": "Tucson",
+      "country": "United States",
+      "lat": 32.2226,
+      "lon": -110.9747
+    },
+    {
+      "name": "Phoenix",
+      "country": "United States",
+      "lat": 33.4484,
+      "lon": -112.074
+    },
+    {
+      "name": "Abilene",
+      "country": "United States",
+      "lat": 32.4487,
+      "lon": -99.7331
+    },
+    {
+      "name": "Dallas",
+      "country": "United States",
+      "lat": 32.7767,
+      "lon": -96.797
+    },
+    {
+      "name": "Austin",
+      "country": "United States",
+      "lat": 30.2672,
+      "lon": -97.7431
+    },
+    {
+      "name": "San Antonio",
+      "country": "United States",
+      "lat": 29.4241,
+      "lon": -98.4936
+    },
+    {
+      "name": "Rapid City",
+      "country": "United States",
+      "lat": 44.0805,
+      "lon": -103.231
+    },
+    {
+      "name": "Salt Lake City",
+      "country": "United States",
+      "lat": 40.7608,
+      "lon": -111.891
+    },
+    {
+      "name": "Lincoln",
+      "country": "United States",
+      "lat": 40.8136,
+      "lon": -96.7026
+    },
+    {
+      "name": "Des Moines",
+      "country": "United States",
+      "lat": 41.5868,
+      "lon": -93.625
+    },
+    {
+      "name": "Boise",
+      "country": "United States",
+      "lat": 43.615,
+      "lon": -116.2023
+    },
+    {
+      "name": "Coeur d'Alene",
+      "country": "United States",
+      "lat": 47.6777,
+      "lon": -116.7805
+    },
+    {
+      "name": "Pocatello",
+      "country": "United States",
+      "lat": 42.8713,
+      "lon": -112.4455
+    },
+    {
+      "name": "Jerome",
+      "country": "United States",
+      "lat": 42.7241,
+      "lon": -114.5187
+    },
+    {
+      "name": "Blackfoot",
+      "country": "United States",
+      "lat": 43.1905,
+      "lon": -112.345
+    },
+    {
+      "name": "Sun Valley",
+      "country": "United States",
+      "lat": 43.6971,
+      "lon": -114.3517
+    },
+    {
+      "name": "Ketchum",
+      "country": "United States",
+      "lat": 43.6807,
+      "lon": -114.3637
+    },
+    {
+      "name": "Hailey",
+      "country": "United States",
+      "lat": 43.5196,
+      "lon": -114.3153
+    },
+    {
+      "name": "Twin Falls",
+      "country": "United States",
+      "lat": 42.563,
+      "lon": -114.4609
+    },
+    {
+      "name": "Buhl",
+      "country": "United States",
+      "lat": 42.599,
+      "lon": -114.7595
+    },
+    {
+      "name": "Horseshoe Bend",
+      "country": "United States",
+      "lat": 43.9124,
+      "lon": -116.1887
+    },
+    {
+      "name": "Meridian",
+      "country": "United States",
+      "lat": 43.6121,
+      "lon": -116.3915
+    },
+    {
+      "name": "Eagle",
+      "country": "United States",
+      "lat": 43.6955,
+      "lon": -116.3541
+    },
+    {
+      "name": "Nampa",
+      "country": "United States",
+      "lat": 43.5407,
+      "lon": -116.5635
+    },
+    {
+      "name": "Caldwell",
+      "country": "United States",
+      "lat": 43.6629,
+      "lon": -116.6874
+    },
+    {
+      "name": "Emmett",
+      "country": "United States",
+      "lat": 43.8735,
+      "lon": -116.4993
+    },
+    {
+      "name": "Middleton",
+      "country": "United States",
+      "lat": 43.7077,
+      "lon": -116.6193
+    },
+    {
+      "name": "McCall",
+      "country": "United States",
+      "lat": 44.911,
+      "lon": -116.0987
+    },
+    {
+      "name": "Donnelly",
+      "country": "United States",
+      "lat": 44.736,
+      "lon": -116.0793
+    },
+    {
+      "name": "Portland",
+      "country": "United States",
+      "lat": 45.5152,
+      "lon": -122.6784
+    },
+    {
+      "name": "Seattle",
+      "country": "United States",
+      "lat": 47.6062,
+      "lon": -122.3321
+    },
+    {
+      "name": "Bainbridge Island",
+      "country": "United States",
+      "lat": 47.6262,
+      "lon": -122.5212
+    },
+    {
+      "name": "Cannon Beach (Haystack Rock)",
+      "country": "United States",
+      "lat": 45.8846,
+      "lon": -123.969
+    },
+    {
+      "name": "Eugene",
+      "country": "United States",
+      "lat": 44.0521,
+      "lon": -123.0868
+    },
+    {
+      "name": "Bend",
+      "country": "United States",
+      "lat": 44.0582,
+      "lon": -121.3153
+    },
+    {
+      "name": "San Diego",
+      "country": "United States",
+      "lat": 32.7157,
+      "lon": -117.1611
+    },
+    {
+      "name": "San Francisco",
+      "country": "United States",
+      "lat": 37.7749,
+      "lon": -122.4194
+    },
+    {
+      "name": "San Jose",
+      "country": "United States",
+      "lat": 37.3382,
+      "lon": -121.8863
+    },
+    {
+      "name": "Santa Clara",
+      "country": "United States",
+      "lat": 37.3541,
+      "lon": -121.9552
+    },
+    {
+      "name": "Los Angeles",
+      "country": "United States",
+      "lat": 34.0522,
+      "lon": -118.2437
+    },
+    {
+      "name": "Wilmington",
+      "country": "United States",
+      "lat": 39.7391,
+      "lon": -75.5398
+    },
+    {
+      "name": "Louisville",
+      "country": "United States",
+      "lat": 38.2527,
+      "lon": -85.7585
+    },
+    {
+      "name": "West Lafayette",
+      "country": "United States",
+      "lat": 40.4259,
+      "lon": -86.9081
+    },
+    {
+      "name": "South Bend",
+      "country": "United States",
+      "lat": 41.6764,
+      "lon": -86.252
+    },
+    {
+      "name": "La Porte",
+      "country": "United States",
+      "lat": 41.6103,
+      "lon": -86.7225
+    },
+    {
+      "name": "Terre Haute",
+      "country": "United States",
+      "lat": 39.4667,
+      "lon": -87.4139
+    },
+    {
+      "name": "Jasper",
+      "country": "United States",
+      "lat": 38.3917,
+      "lon": -86.9311
+    },
+    {
+      "name": "Holland",
+      "country": "United States",
+      "lat": 38.1131,
+      "lon": -86.735
+    },
+    {
+      "name": "Lebanon",
+      "country": "United States",
+      "lat": 40.0481,
+      "lon": -86.4692
+    },
+    {
+      "name": "Indianapolis",
+      "country": "United States",
+      "lat": 39.7684,
+      "lon": -86.1581
+    },
+    {
+      "name": "Chicago",
+      "country": "United States",
+      "lat": 41.8781,
+      "lon": -87.6298
+    },
+    {
+      "name": "Urbana-Champaign",
+      "country": "United States",
+      "lat": 40.1106,
+      "lon": -88.2073
+    },
+    {
+      "name": "Milwaukee",
+      "country": "United States",
+      "lat": 43.0389,
+      "lon": -87.9065
+    },
+    {
+      "name": "Sturgeon Bay",
+      "country": "United States",
+      "lat": 44.8342,
+      "lon": -87.377
+    },
+    {
+      "name": "Door County",
+      "country": "United States",
+      "lat": 45.027,
+      "lon": -87.12
+    },
+    {
+      "name": "Poughkeepsie",
+      "country": "United States",
+      "lat": 41.7004,
+      "lon": -73.921
+    },
+    {
+      "name": "Mineola",
+      "country": "United States",
+      "lat": 40.749,
+      "lon": -73.6407
+    },
+    {
+      "name": "Long Island",
+      "country": "United States",
+      "lat": 40.79,
+      "lon": -73.1
+    },
+    {
+      "name": "New York City",
+      "country": "United States",
+      "lat": 40.7128,
+      "lon": -74.006
+    },
+    {
+      "name": "Newark",
+      "country": "United States",
+      "lat": 40.7357,
+      "lon": -74.1724
     }
   ]
 }

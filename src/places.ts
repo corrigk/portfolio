@@ -9,7 +9,7 @@ import data from './data/places.json';
 const ALIASES: Record<string, string> = {
   'united states': 'United States of America', usa: 'United States of America', us: 'United States of America', 'u.s.': 'United States of America',
   uk: 'United Kingdom', 'great britain': 'United Kingdom', england: 'United Kingdom', scotland: 'United Kingdom', wales: 'United Kingdom',
-  holland: 'Netherlands', 'the netherlands': 'Netherlands',
+  'vatican city': 'Vatican', vatican: 'Vatican', holland: 'Netherlands', 'the netherlands': 'Netherlands',
   dc: 'District of Columbia', 'washington dc': 'District of Columbia', 'washington, d.c.': 'District of Columbia', 'd.c.': 'District of Columbia',
 };
 const canon = (n: string) => ALIASES[n.trim().toLowerCase()] ?? n.trim();
@@ -78,7 +78,7 @@ export const usStates = states.map((f) => ({ name: f.properties.name, d: usPath(
 /* ---------- summary ---------- */
 const continentOf: Record<string, string> = {
   Germany: 'Europe', Austria: 'Europe', Switzerland: 'Europe', 'United Kingdom': 'Europe', Ireland: 'Europe', France: 'Europe', Italy: 'Europe',
-  Netherlands: 'Europe', Belgium: 'Europe', Denmark: 'Europe', Aruba: 'North America', Canada: 'North America', 'United States of America': 'North America',
+  Netherlands: 'Europe', Vatican: 'Europe', Belgium: 'Europe', Denmark: 'Europe', Aruba: 'North America', Canada: 'North America', 'United States of America': 'North America',
 };
 export const summary = {
   countries: visitedCountries.size,

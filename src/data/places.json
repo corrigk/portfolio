@@ -1,30 +1,270 @@
 {
   "countries": [
-    { "name": "Germany" },
-    { "name": "Austria" },
-    { "name": "Switzerland" },
-    { "name": "United Kingdom", "regions": ["England", "Scotland", "Wales"] },
-    { "name": "Ireland" },
-    { "name": "France" },
-    { "name": "Italy" },
-    { "name": "Netherlands" },
-    { "name": "Belgium" },
-    { "name": "Denmark" },
-    { "name": "Aruba" },
-    { "name": "Canada" },
-    { "name": "United States" }
+    {
+      "name": "Germany"
+    },
+    {
+      "name": "Austria"
+    },
+    {
+      "name": "Switzerland"
+    },
+    {
+      "name": "United Kingdom",
+      "regions": [
+        "England",
+        "Scotland",
+        "Wales"
+      ]
+    },
+    {
+      "name": "Ireland"
+    },
+    {
+      "name": "France"
+    },
+    {
+      "name": "Italy"
+    },
+    {
+      "name": "Netherlands"
+    },
+    {
+      "name": "Belgium"
+    },
+    {
+      "name": "Denmark"
+    },
+    {
+      "name": "Aruba"
+    },
+    {
+      "name": "Canada"
+    },
+    {
+      "name": "United States"
+    },
+    {
+      "name": "Vatican City"
+    }
   ],
   "states": [
-    "Hawaii", "Washington", "Oregon", "California", "Nevada", "Idaho", "Utah", "Arizona", "New Mexico", "Texas",
-    "Nebraska", "Iowa", "Illinois", "Indiana", "Minnesota", "Montana", "Wisconsin", "Michigan", "Maine", "New York",
-    "New Jersey", "Delaware", "Virginia", "District of Columbia", "Tennessee", "Kentucky", "Ohio", "Florida", "Alabama",
-    "Georgia", "Colorado", "Pennsylvania", "Kansas", "South Dakota", "Wyoming"
+    "Hawaii",
+    "Washington",
+    "Oregon",
+    "California",
+    "Nevada",
+    "Idaho",
+    "Utah",
+    "Arizona",
+    "New Mexico",
+    "Texas",
+    "Nebraska",
+    "Iowa",
+    "Illinois",
+    "Indiana",
+    "Minnesota",
+    "Montana",
+    "Wisconsin",
+    "Michigan",
+    "Maine",
+    "New York",
+    "New Jersey",
+    "Delaware",
+    "Virginia",
+    "District of Columbia",
+    "Tennessee",
+    "Kentucky",
+    "Ohio",
+    "Florida",
+    "Alabama",
+    "Georgia",
+    "Colorado",
+    "Pennsylvania",
+    "Kansas",
+    "South Dakota",
+    "Wyoming"
   ],
   "cities": [
-    { "name": "Vancouver", "country": "Canada", "lat": 49.2827, "lon": -123.1207 },
-    { "name": "Victoria", "country": "Canada", "lat": 48.4284, "lon": -123.3656 },
-    { "name": "Montreal", "country": "Canada", "lat": 45.5017, "lon": -73.5673 },
-    { "name": "Quebec City", "country": "Canada", "lat": 46.8139, "lon": -71.208 },
-    { "name": "Edinburgh", "country": "United Kingdom", "lat": 55.9533, "lon": -3.1883 }
+    {
+      "name": "Vancouver",
+      "country": "Canada",
+      "lat": 49.2827,
+      "lon": -123.1207
+    },
+    {
+      "name": "Victoria",
+      "country": "Canada",
+      "lat": 48.4284,
+      "lon": -123.3656
+    },
+    {
+      "name": "Montreal",
+      "country": "Canada",
+      "lat": 45.5017,
+      "lon": -73.5673
+    },
+    {
+      "name": "Quebec City",
+      "country": "Canada",
+      "lat": 46.8139,
+      "lon": -71.208
+    },
+    {
+      "name": "Edinburgh",
+      "country": "United Kingdom",
+      "lat": 55.9533,
+      "lon": -3.1883
+    },
+    {
+      "name": "Paris",
+      "country": "France",
+      "lat": 48.8566,
+      "lon": 2.3522
+    },
+    {
+      "name": "Venice",
+      "country": "Italy",
+      "lat": 45.4408,
+      "lon": 12.3155
+    },
+    {
+      "name": "Rome",
+      "country": "Italy",
+      "lat": 41.9028,
+      "lon": 12.4964
+    },
+    {
+      "name": "Vatican City",
+      "country": "Vatican City",
+      "lat": 41.9029,
+      "lon": 12.4534
+    },
+    {
+      "name": "Ravello",
+      "country": "Italy",
+      "lat": 40.649,
+      "lon": 14.611
+    },
+    {
+      "name": "Milan",
+      "country": "Italy",
+      "lat": 45.4642,
+      "lon": 9.19
+    },
+    {
+      "name": "Ettal",
+      "country": "Germany",
+      "lat": 47.5667,
+      "lon": 11.0958
+    },
+    {
+      "name": "Munich",
+      "country": "Germany",
+      "lat": 48.1351,
+      "lon": 11.582
+    },
+    {
+      "name": "Salzburg",
+      "country": "Austria",
+      "lat": 47.8095,
+      "lon": 13.055
+    },
+    {
+      "name": "Vienna",
+      "country": "Austria",
+      "lat": 48.2082,
+      "lon": 16.3738
+    },
+    {
+      "name": "Frankfurt",
+      "country": "Germany",
+      "lat": 50.1109,
+      "lon": 8.6821
+    },
+    {
+      "name": "London",
+      "country": "United Kingdom",
+      "lat": 51.5074,
+      "lon": -0.1278
+    },
+    {
+      "name": "Manchester",
+      "country": "United Kingdom",
+      "lat": 53.4808,
+      "lon": -2.2426
+    },
+    {
+      "name": "Killarney",
+      "country": "Ireland",
+      "lat": 52.0599,
+      "lon": -9.5044
+    },
+    {
+      "name": "Dublin",
+      "country": "Ireland",
+      "lat": 53.3498,
+      "lon": -6.2603
+    },
+    {
+      "name": "Shannon",
+      "country": "Ireland",
+      "lat": 52.7042,
+      "lon": -8.865
+    },
+    {
+      "name": "Brussels",
+      "country": "Belgium",
+      "lat": 50.8503,
+      "lon": 4.3517
+    },
+    {
+      "name": "Amsterdam",
+      "country": "Netherlands",
+      "lat": 52.3676,
+      "lon": 4.9041
+    },
+    {
+      "name": "Galway",
+      "country": "Ireland",
+      "lat": 53.2707,
+      "lon": -9.0568
+    },
+    {
+      "name": "Limerick",
+      "country": "Ireland",
+      "lat": 52.6638,
+      "lon": -8.6267
+    },
+    {
+      "name": "Glasgow",
+      "country": "United Kingdom",
+      "lat": 55.8642,
+      "lon": -4.2518
+    },
+    {
+      "name": "Rotterdam",
+      "country": "Netherlands",
+      "lat": 51.9244,
+      "lon": 4.4777
+    },
+    {
+      "name": "Zurich",
+      "country": "Switzerland",
+      "lat": 47.3769,
+      "lon": 8.5417
+    },
+    {
+      "name": "Oberndorf bei Salzburg",
+      "country": "Austria",
+      "lat": 47.942,
+      "lon": 12.934
+    },
+    {
+      "name": "Schwangau",
+      "country": "Germany",
+      "lat": 47.576,
+      "lon": 10.735
+    }
   ]
 }

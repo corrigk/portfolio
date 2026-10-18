@@ -14,7 +14,8 @@
       "regions": [
         "England",
         "Scotland",
-        "Wales"
+        "Wales",
+        "Northern Ireland"
       ]
     },
     {
@@ -667,6 +668,216 @@
       "country": "United States",
       "lat": 39.7589,
       "lon": -84.1916
+    },
+    {
+      "name": "Detroit",
+      "country": "United States",
+      "lat": 42.3314,
+      "lon": -83.0458
+    },
+    {
+      "name": "Bloomington, IN",
+      "country": "United States",
+      "lat": 39.1653,
+      "lon": -86.5264
+    },
+    {
+      "name": "Lafayette, IN",
+      "country": "United States",
+      "lat": 40.4167,
+      "lon": -86.8753
+    },
+    {
+      "name": "Carmel, IN",
+      "country": "United States",
+      "lat": 39.9784,
+      "lon": -86.118
+    },
+    {
+      "name": "Minneapolis",
+      "country": "United States",
+      "lat": 44.9778,
+      "lon": -93.265
+    },
+    {
+      "name": "Kansas City, KS",
+      "country": "United States",
+      "lat": 39.1155,
+      "lon": -94.6268
+    },
+    {
+      "name": "Mount Rushmore",
+      "country": "United States",
+      "lat": 43.8791,
+      "lon": -103.4591
+    },
+    {
+      "name": "Colorado Springs",
+      "country": "United States",
+      "lat": 38.8339,
+      "lon": -104.8214
+    },
+    {
+      "name": "Denver",
+      "country": "United States",
+      "lat": 39.7392,
+      "lon": -104.9903
+    },
+    {
+      "name": "Ogden",
+      "country": "United States",
+      "lat": 41.223,
+      "lon": -111.9738
+    },
+    {
+      "name": "Yellowstone National Park",
+      "country": "United States",
+      "lat": 44.428,
+      "lon": -110.5885
+    },
+    {
+      "name": "West Yellowstone",
+      "country": "United States",
+      "lat": 44.6621,
+      "lon": -111.1041
+    },
+    {
+      "name": "Idaho Falls",
+      "country": "United States",
+      "lat": 43.4917,
+      "lon": -112.0339
+    },
+    {
+      "name": "Sandpoint",
+      "country": "United States",
+      "lat": 48.2766,
+      "lon": -116.5535
+    },
+    {
+      "name": "Stanley",
+      "country": "United States",
+      "lat": 44.2163,
+      "lon": -114.9362
+    },
+    {
+      "name": "Idaho City",
+      "country": "United States",
+      "lat": 43.8279,
+      "lon": -115.8374
+    },
+    {
+      "name": "Burley",
+      "country": "United States",
+      "lat": 42.5357,
+      "lon": -113.7929
+    },
+    {
+      "name": "Mountain Home",
+      "country": "United States",
+      "lat": 43.133,
+      "lon": -115.6912
+    },
+    {
+      "name": "Santa Fe",
+      "country": "United States",
+      "lat": 35.687,
+      "lon": -105.9378
+    },
+    {
+      "name": "Fort Worth",
+      "country": "United States",
+      "lat": 32.7555,
+      "lon": -97.3308
+    },
+    {
+      "name": "Honolulu",
+      "country": "United States",
+      "lat": 21.3099,
+      "lon": -157.8581
+    },
+    {
+      "name": "Philadelphia",
+      "country": "United States",
+      "lat": 39.9526,
+      "lon": -75.1652
+    },
+    {
+      "name": "Buffalo",
+      "country": "United States",
+      "lat": 42.8864,
+      "lon": -78.8784
+    },
+    {
+      "name": "Albany",
+      "country": "United States",
+      "lat": 42.6526,
+      "lon": -73.7562
+    },
+    {
+      "name": "Portland, ME",
+      "country": "United States",
+      "lat": 43.6591,
+      "lon": -70.2568
+    },
+    {
+      "name": "Bar Harbor",
+      "country": "United States",
+      "lat": 44.3876,
+      "lon": -68.2039
+    },
+    {
+      "name": "Richmond",
+      "country": "United States",
+      "lat": 37.5407,
+      "lon": -77.436
+    },
+    {
+      "name": "Tri-Cities, WA",
+      "country": "United States",
+      "lat": 46.231,
+      "lon": -119.17
+    },
+    {
+      "name": "Walla Walla",
+      "country": "United States",
+      "lat": 46.0646,
+      "lon": -118.343
+    },
+    {
+      "name": "Nashville",
+      "country": "United States",
+      "lat": 36.1627,
+      "lon": -86.7816
+    },
+    {
+      "name": "Knoxville",
+      "country": "United States",
+      "lat": 35.9606,
+      "lon": -83.9207
+    },
+    {
+      "name": "Gatlinburg",
+      "country": "United States",
+      "lat": 35.7143,
+      "lon": -83.5102
+    },
+    {
+      "name": "Belfast",
+      "country": "United Kingdom",
+      "lat": 54.5973,
+      "lon": -5.9301
+    },
+    {
+      "name": "Kilkenny",
+      "country": "Ireland",
+      "lat": 52.6541,
+      "lon": -7.2448
+    },
+    {
+      "name": "Innsbruck",
+      "country": "Austria",
+      "lat": 47.2692,
+      "lon": 11.4041
     }
   ]
 }

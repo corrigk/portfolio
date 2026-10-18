@@ -1,6 +1,6 @@
 ---
 title: Boiler Catholic Men
-summary: The website for Boiler Catholic Men, a brotherhood of Catholic men at Purdue, with the weekly schedule, announcements and who to contact.
+summary: A full-stack website I built for Boiler Catholic Men, the Purdue ministry I help lead, for events, member engagement and alumni connections.
 category: software
 tags: [web design, community, ministry]
 featured: false
@@ -16,7 +16,7 @@ demo:
 specs:
   - Web design # TODO: list the stack / platform you used
 ---
-Boiler Catholic Men is a community of Purdue students pursuing Christ together through prayer, formation and friendship. I designed its website.
+Boiler Catholic Men is a community of Purdue students pursuing Christ together through prayer, formation and friendship. I've been one of its ministry leaders at the St. Thomas Aquinas Center since April 2024, on a four-person team serving 350+ active student members, and I built a full-stack website to make event coordination, member engagement and alumni connections easier.
 
 ## What's on the site
 
@@ -26,4 +26,4 @@ Boiler Catholic Men is a community of Purdue students pursuing Christ together t
 - **Who to contact**: an org chart so every question reaches the right leader.
 - A **member directory** and links to the group's GroupMe, Flocknote and Instagram.
 
-<!-- TODO: your role, the stack, launch date, and how the content gets updated (there's an Admin link; confirm what it does). -->
+<!-- TODO: the stack, launch date, and how the admin side works. -->

@@ -1,38 +1,43 @@
 ---
 title: Hypersonic-Flight Rocket Payload
-summary: A Raspberry Pi payload in a custom-machined wedge housing that records rocket skin conditions, acceleration, temperature and pressure.
+summary: A Raspberry Pi payload for a 50-G flight, in a custom-machined wedge housing that records rocket skin conditions, acceleration, temperature and pressure.
 category: hardware
 tags: [cad, machining, raspberry pi, sensors, systems integration, rocketry]
 featured: true
 date: 2025-12-01 # project ran June 2025 to December 2025
 status: complete
-cover: /uploads/rocket-payload/cover.svg # TODO: replace with a real photo (public/uploads/rocket-payload/)
-coverAlt: "Blueprint-style placeholder illustration of a rocket and a wedge-shaped payload housing"
+cover: /uploads/rocket-payload/cover.jpg
+coverAlt: "A rocket climbing on its exhaust plume, beside a close-up of the rocket's nose section with wedge-shaped housings mounted on the body"
 gallery:
-  - image: /uploads/photo-coming.svg # TODO: photo of the machined wedge housing
-    alt: "Placeholder: photo of the wedge housing coming soon"
-    caption: "Custom-machined wedge housing (photo coming soon)"
-  - image: /uploads/photo-coming.svg # TODO: photo of the electronics / Pi Zero stack
-    alt: "Placeholder: photo of the electronics coming soon"
-    caption: "Raspberry Pi Zero, Pi Camera and sensors (photo coming soon)"
-  - image: /uploads/photo-coming.svg # TODO: photo or CAD render of the integrated payload
-    alt: "Placeholder: photo of the integrated payload coming soon"
-    caption: "Integrated payload (photo coming soon)"
+  - image: /uploads/rocket-payload/rocket.jpg
+    alt: "The rocket's polished nose cone and body with two wedge-shaped housings mounted on the side"
+    caption: "Wedge housings mounted on the rocket body" # TODO: confirm which housing is the payload
+  - image: /uploads/rocket-payload/launch.jpg
+    alt: "The rocket lifting off into a blue sky on a bright exhaust plume"
+    caption: "Launch" # TODO: confirm this is the payload's flight and add the date
+  - image: /uploads/rocket-payload/cad-housing.jpg
+    alt: "Siemens NX model of a rocket body section with the wedge housing attached"
+    caption: "Rocket body section with the wedge housing, modeled in Siemens NX"
+  - image: /uploads/rocket-payload/cad-detail.jpg
+    alt: "Close-up of the wedge housing in Siemens NX with one face highlighted"
+    caption: "Inside the wedge housing (Siemens NX)"
 specSheet:
   - { label: "Program", value: "AAE 41800 Zero Gravity Flight Experiment" }
   - { label: "Where", value: "West Lafayette, IN" }
   - { label: "When", value: "Jun – Dec 2025" }
+  - { label: "Flight load", value: "50 G" }
+  - { label: "CAD", value: "Siemens NX" }
   - { label: "Computer", value: "Raspberry Pi Zero" }
   - { label: "Camera", value: "Pi Camera" }
   - { label: "Measures", value: "Skin conditions, acceleration, temperature, pressure" }
   - { label: "Partners", value: "Pluto Aerospace, AETC" }
 specs:
-  - CAD
+  - Siemens NX (CAD)
   - Machining
   - Raspberry Pi Zero + Pi Camera
   - Acceleration, temperature and pressure sensors
 ---
-A payload built to ride on a hypersonic-flight rocket and record what the vehicle's skin experiences, along with acceleration, temperature and pressure. It was part of AAE 41800, the Zero Gravity Flight Experiment, with Purdue Rocket Experimental Research Video in Educational Work, from June to December 2025.
+A payload built for a 50-G hypersonic flight, designed to ride on the rocket and record what the vehicle's skin experiences, along with acceleration, temperature and pressure. It was part of AAE 41800, the Zero Gravity Flight Experiment, with Purdue Rocket Experimental Research Video in Educational Work, from June to December 2025.
 
 ## My role
 
@@ -40,4 +45,3 @@ I led the **CAD**, **electronics** and **full-system integration**. I designed a
 
 <!-- TODO: what flew (or will fly), and what the data showed. Add results only if you have them. -->
 <!-- TODO: team size and anything specific you're proud of (a design decision, a test, a problem you solved). -->
-<!-- TODO: drop photos into public/uploads/rocket-payload/ and replace the cover and gallery slots above. -->

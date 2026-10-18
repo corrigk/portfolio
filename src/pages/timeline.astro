@@ -16,7 +16,7 @@ for (const it of dated) {
   years[years.length - 1].items.push(it);
 }
 const range = (i: (typeof dated)[number]) =>
-  i.ongoing ? `${fmtYM(i.date)} — Present` : i.end ? `${fmtYM(i.date)} — ${fmtYM(i.end)}` : fmtYM(i.date);
+  i.ongoing ? `${fmtYM(i.date, i.yearOnly)} — Present` : i.end ? `${fmtYM(i.date, i.yearOnly)} — ${fmtYM(i.end, i.yearOnly)}` : fmtYM(i.date, i.yearOnly);
 ---
 <Base title="Timeline" description="Work, projects, places lived and ideas, on one timeline.">
   {hasPlaceholders && <div class="placeholder-note">Placeholder timeline: replace entries in the CMS (Timeline).</div>}

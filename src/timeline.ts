@@ -1,7 +1,7 @@
 import { getCollection, render } from 'astro:content';
 import { url, timelineIncludesProjects } from './lib';
 
-export type TLType = 'work' | 'education' | 'home' | 'milestone' | 'idea' | 'project';
+export type TLType = 'work' | 'education' | 'home' | 'team' | 'milestone' | 'idea' | 'project';
 
 export interface TLItem {
   id: string;
@@ -10,6 +10,7 @@ export interface TLItem {
   date?: Date;
   end?: Date;
   ongoing: boolean;
+  yearOnly?: boolean;
   place?: string;
   link?: string;
   summary?: string;
@@ -19,6 +20,7 @@ export interface TLItem {
 
 export const TYPE_LABELS: Record<TLType, string> = {
   work: 'Work',
+  team: 'Teams & leadership',
   project: 'Projects',
   education: 'Education',
   home: 'Places lived',
@@ -27,10 +29,11 @@ export const TYPE_LABELS: Record<TLType, string> = {
 };
 
 export const TYPE_SINGULAR: Record<TLType, string> = {
-  work: 'Work', project: 'Project', education: 'Education', home: 'Home', milestone: 'Milestone', idea: 'Idea',
+  work: 'Work', team: 'Team', project: 'Project', education: 'Education', home: 'Home', milestone: 'Milestone', idea: 'Idea',
 };
 
-export const fmtYM = (d?: Date) => (d ? `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}` : '');
+export const fmtYM = (d?: Date, yearOnly = false) =>
+  d ? (yearOnly ? String(d.getUTCFullYear()) : `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}`) : '';
 
 /** Timeline entries plus (optionally) every project, newest first. Ideas are returned separately. */
 export async function getTimeline() {

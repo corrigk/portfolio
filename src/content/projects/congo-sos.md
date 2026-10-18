@@ -18,14 +18,19 @@ demo:
 specSheet:
   - { label: "Core views", value: "Functional flow · OV-1 CONOPS" }
   - { label: "Process", value: "Nine-stage loop" }
-  - { label: "Build time", value: "About one week" }
+  - { label: "My role", value: "ConOps + visual functional flow" }
+  - { label: "Course", value: "AAE 35103, Purdue" }
+  - { label: "Instructor", value: "Kevin Parsons" }
+  - { label: "Timeline", value: "Two weeks" }
   - { label: "Data", value: "Real public orbit + weather data, illustrative" }
 specs:
   - JavaScript + Vite
   - CesiumJS (3D globe)
   - satellite.js (orbits)
 ---
-A systems architecture for the Congo River Basin that you explore instead of flip through. I built it in about a week, and the two main pieces are a **functional flow diagram** and an **OV-1 operational concept (CONOPS)** graphic.
+A systems architecture for the Congo River Basin that you explore instead of flip through. It was our team's System of Systems Architecture Review for AAE 35103 at Purdue, taught by Kevin Parsons: two weeks to design the architecture and present it.
+
+I was in charge of the **concept of operations (ConOps)** and the **visual functional flow**, which became the two centerpieces: an OV-1-style operational concept you can fly around in 3D, and a functional flow you can click through.
 
 It shows how satellites, aircraft and UAVs, ground stations, river assets, community reporting and governance institutions could monitor hazards across the basin and turn observations into action through one nine-stage loop.
 
@@ -39,5 +44,5 @@ It shows how satellites, aircraft and UAVs, ground stations, river assets, commu
 
 It's a concept visualization, not a live monitoring system. The satellite and weather layers use real public data for illustration only.
 
-<!-- TODO: confirm the context (course? team members? your role) and add it here. -->
+<!-- TODO: optionally name your teammates (with their permission). -->
 <!-- TODO: add screenshots of the System Overview and the functional flow / OV-1 to public/uploads/congo-sos/ -->

@@ -95,9 +95,11 @@ collections:
           - { label: Education, value: education }
           - { label: Place lived, value: home }
           - { label: Milestone, value: milestone }
+          - { label: Team or leadership role, value: team }
           - { label: Idea (future plan; no date needed), value: idea }
       - { label: Start date, name: date, widget: datetime, required: false, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", hint: "Leave empty for ideas." }
       - { label: End date, name: end, widget: datetime, required: false, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { label: Show year only, name: yearOnly, widget: boolean, default: false, required: false, hint: "Tick if you only know the year." }
       - { label: Still going?, name: ongoing, widget: boolean, default: false, required: false, hint: "Shows 'Present' as the end date." }
       - { label: Place, name: place, widget: string, required: false, hint: "e.g. West Lafayette, IN" }
       - { label: Link, name: link, widget: string, required: false, hint: "Optional web address, or a page on this site like /projects/my-project/" }

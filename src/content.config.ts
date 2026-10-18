@@ -41,8 +41,9 @@ const timeline = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/timeline' }),
   schema: z.object({
     title: z.string(),
-    type: z.enum(['work', 'education', 'home', 'milestone', 'idea', 'project']),
+    type: z.enum(['work', 'education', 'home', 'team', 'milestone', 'idea', 'project']),
     date: z.coerce.date().optional(),   // start date; ideas may leave it empty
+    yearOnly: z.boolean().default(false), // show "2009" instead of "2009.01" when the month is unknown
     end: z.coerce.date().optional(),
     ongoing: z.boolean().default(false),
     place: z.string().optional(),

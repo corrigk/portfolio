@@ -885,6 +885,108 @@
       "country": "United States",
       "lat": 38.627,
       "lon": -90.1994
+    },
+    {
+      "name": "Kansas City, MO",
+      "country": "United States",
+      "lat": 39.0997,
+      "lon": -94.5786
+    },
+    {
+      "name": "Atchison",
+      "country": "United States",
+      "lat": 39.5631,
+      "lon": -95.1216
+    },
+    {
+      "name": "Butchart Gardens",
+      "country": "Canada",
+      "lat": 48.5649,
+      "lon": -123.469
+    },
+    {
+      "name": "Capilano Suspension Bridge",
+      "country": "Canada",
+      "lat": 49.3429,
+      "lon": -123.1149
+    },
+    {
+      "name": "Wendell",
+      "country": "United States",
+      "lat": 42.7855,
+      "lon": -114.7034
+    },
+    {
+      "name": "Alpine Valley (East Troy)",
+      "country": "United States",
+      "lat": 42.7872,
+      "lon": -88.3834
+    },
+    {
+      "name": "Bald Mountain",
+      "country": "United States",
+      "lat": 43.6597,
+      "lon": -114.4026
+    },
+    {
+      "name": "Bogus Basin",
+      "country": "United States",
+      "lat": 43.765,
+      "lon": -116.102
+    },
+    {
+      "name": "Hilger",
+      "country": "United States",
+      "lat": 47.1494,
+      "lon": -109.2262
+    },
+    {
+      "name": "Craters of the Moon",
+      "country": "United States",
+      "lat": 43.4166,
+      "lon": -113.5166
+    },
+    {
+      "name": "Saguaro National Park",
+      "country": "United States",
+      "lat": 32.2967,
+      "lon": -111.1666
+    },
+    {
+      "name": "Olympic National Park",
+      "country": "United States",
+      "lat": 47.8021,
+      "lon": -123.6044
+    },
+    {
+      "name": "Great Smoky Mountains National Park",
+      "country": "United States",
+      "lat": 35.6118,
+      "lon": -83.4895
+    },
+    {
+      "name": "Mount Rainier",
+      "country": "United States",
+      "lat": 46.8523,
+      "lon": -121.7603
+    },
+    {
+      "name": "Hawaii Volcanoes National Park",
+      "country": "United States",
+      "lat": 19.4194,
+      "lon": -155.2885
+    },
+    {
+      "name": "Omaha",
+      "country": "United States",
+      "lat": 41.2565,
+      "lon": -95.9345
+    },
+    {
+      "name": "Davenport",
+      "country": "United States",
+      "lat": 41.5236,
+      "lon": -90.5776
     }
   ]
 }

@@ -84,7 +84,8 @@
     "Pennsylvania",
     "Kansas",
     "South Dakota",
-    "Wyoming"
+    "Wyoming",
+    "Missouri"
   ],
   "cities": [
     {
@@ -878,6 +879,12 @@
       "country": "Austria",
       "lat": 47.2692,
       "lon": 11.4041
+    },
+    {
+      "name": "St. Louis",
+      "country": "United States",
+      "lat": 38.627,
+      "lon": -90.1994
     }
   ]
 }
